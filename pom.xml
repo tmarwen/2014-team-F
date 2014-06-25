@@ -40,6 +40,7 @@
     <module>config</module>
     <module>webapp</module>
     <module>bundle</module>
+    <module>portlet</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/exo-codefest/2014-team-F.git</connection>
