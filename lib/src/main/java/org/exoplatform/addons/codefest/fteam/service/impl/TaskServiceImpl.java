@@ -5,6 +5,7 @@ import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,24 +15,34 @@ import java.util.List;
  */
 public class TaskServiceImpl implements TaskService
 {
-  private List<TaskBean> mockTasks = new ArrayList<TaskBean>();
+  private static List<TaskBean> mockTasks = new ArrayList<TaskBean>();
+
+  static {
+    if (mockTasks.isEmpty())
+    {
+      TaskBean task1 = new TaskBean(1, "marwen", new Date(), "Description goes here...", 1);
+      TaskBean task2 = new TaskBean(2, "ahmed", new Date(), "Description for task 2 goes here...", 3);
+      mockTasks.add(task1);
+      mockTasks.add(task2);
+    }
+  }
 
   @Override
   public TaskBean getTask(int taskId)
   {
-    return null;
+    return mockTasks.get(taskId);
   }
 
   @Override
-  public int addTask(TaskBean task)
+  public boolean addTask(TaskBean task)
   {
-    return 0;
+    return mockTasks.add(task);
   }
 
   @Override
-  public List<TaskBean> listAll()
+  public List<TaskBean> getAllTasks()
   {
-    return null;
+    return mockTasks;
   }
 
   @Override

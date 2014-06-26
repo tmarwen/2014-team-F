@@ -21,6 +21,7 @@ import juzu.Route;
 import juzu.View;
 import juzu.Response;
 import juzu.template.Template;
+import org.exoplatform.addons.codefest.fteam.service.TaskService;
 import org.exoplatform.addons.codefest.fteam.templates.index;
 
 import javax.inject.Inject;
@@ -31,6 +32,9 @@ public class Controller {
   @Inject
   @Path("index.gtmpl")
   org.exoplatform.addons.codefest.fteam.templates.index index;
+
+  @Inject
+  TaskService taskService;
 
   @View
   public Response.Content index() throws IOException {

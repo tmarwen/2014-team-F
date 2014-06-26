@@ -14,9 +14,9 @@ public interface TaskService
 {
   public TaskBean getTask(int taskId);
 
-  public int addTask(TaskBean task);
+  public boolean addTask(TaskBean task);
 
-  public List<TaskBean> listAll();
+  public List<TaskBean> getAllTasks();
 
   List<TaskBean> listByFilter(TaskFilter filter);
 }

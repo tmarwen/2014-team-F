@@ -7,44 +7,46 @@
     Task Management Application
   </div>
 
-  <div id="taskNavigationWrapper" class="content">
-    <ul id="taskContainerTab" class="nav nav-pills nav-stacked">
-      <li class="active dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          Task List <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-          <li><a href="#allTasks" tabindex="-1" data-toggle="tab">All</a></li>
-          <li><a href="#todoTasks" tabindex="-1" data-toggle="tab">Todo</a></li>
-          <li><a href="#inProgressTasks" tabindex="-1" data-toggle="tab">In Progress</a></li>
-          <li><a href="#doneTasks" tabindex="-1" data-toggle="tab">Done</a></li>
-          <li class="divider"></li>
-          <li><a href="#perProject" tabindex="-1" data-toggle="tab">Per Project</a></li>
-        </ul>
-      </li>
-      <li><a href="#addTaskContainer" data-toggle="tab">Add Task</a></li>
-    </ul>
-  </div>
+  <ul id="taskNavigationContainer" class="nav nav-pills">
+    <li class="active dropdown">
+      <a class="glyphicon glyphicon-search dropdown-toggle" data-toggle="dropdown" href="#">
+        Task List <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+        <li><a  href="#allTasks" tabindex="-1" data-toggle="tab">All</a></li>
+        <li><a href="#todoTasks" tabindex="-1" data-toggle="tab">Todo</a></li>
+        <li><a href="#inProgressTasks" tabindex="-1" data-toggle="tab">In Progress</a></li>
+        <li><a href="#doneTasks" tabindex="-1" data-toggle="tab">Done</a></li>
+        <li class="divider"></li>
+        <li><a href="#perProject" tabindex="-1" data-toggle="tab">Per Project</a></li>
+      </ul>
+    </li>
+    <li><a class="glyphicon glyphicon-plus-sign" href="#addTaskContainer" tabindex="-1" data-toggle="tab">Add Task</a></li>
+  </ul>
 
-  <div id="taskContentWrapper" class="tab-content">
+  <div id="taskContentContainer" class="tab-content">
     <div class="tab-pane fade in active" id="allTasks">
       <p>All tasks here</p>
     </div>
+
     <div class="tab-pane fade" id="todoTasks">
       <p>Todo</p>
     </div>
+
     <div class="tab-pane fade" id="inProgressTasks">
       <p>In Progress</p>
     </div>
+
     <div class="tab-pane fade" id="doneTasks">
       <p>Done</p>
     </div>
+
     <div class="tab-pane fade" id="perProject">
       <p>Per Project</p>
     </div>
+
     <div class="tab-pane fade" id="addTaskContainer">
       <p>Add Task</p>
     </div>
   </div>
 </div>
-
