@@ -1,0 +1,34 @@
+<nodeTypes xmlns:nt="http://www.jcp.org/jcr/nt/1.5" xmlns:mix="http://www.jcp.org/jcr/mix/1.5"
+           xmlns:jcr="http://www.jcp.org/jcr/1.5">
+  <nodeType name="exo:task_management" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>nt:base</supertype>
+    </supertypes>
+    <propertyDefinitions>
+      <propertyDefinition name="exo:task_tasktype" requiredType="String" autoCreated="false" mandatory="true"
+                          onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="jcr:primaryType" requiredType="Name" autoCreated="true" mandatory="true" onParentVersion="COMPUTE"
+                          protected="true" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:task_taskid" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
+                          protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="jcr:mixinTypes" requiredType="Name" autoCreated="false" mandatory="false"
+                          onParentVersion="COMPUTE" protected="true" multiple="true">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:task_due_date" requiredType="String" autoCreated="false" mandatory="false"
+                          onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="exo:task_description" requiredType="String" autoCreated="false" mandatory="false"
+                          onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
+</nodeTypes>
