@@ -15,5 +15,22 @@
  */
 
 @juzu.Application
-@juzu.plugin.servlet.Servlet(value = "/")
+@Servlet(value = "/")
+@Portlet
+@Scripts({
+    @Script( value = "task-manager.js", location = AssetLocation.APPLICATION),
+})
+@Stylesheets({
+    @Stylesheet(value = "task-manager-stylesheet.css", location = AssetLocation.APPLICATION),
+})
+@Assets("*")
 package org.exoplatform.addons.codefest.fteam;
+
+import juzu.asset.AssetLocation;
+import juzu.plugin.asset.Assets;
+import juzu.plugin.asset.Script;
+import juzu.plugin.asset.Scripts;
+import juzu.plugin.asset.Stylesheet;
+import juzu.plugin.asset.Stylesheets;
+import juzu.plugin.portlet.Portlet;
+import juzu.plugin.servlet.Servlet;

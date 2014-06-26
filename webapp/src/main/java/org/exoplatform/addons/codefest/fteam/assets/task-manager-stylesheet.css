@@ -1,0 +1,16 @@
+div#taskContainerWrapper {
+    display: inline-block;
+}
+
+div#taskContainerWrapper div {
+    padding: 5px;
+    float: left;
+}
+div#taskContainerWrapper div#taskContentWrapper {
+    width: 78%;
+    height: 90%;
+}
+div#taskContainerWrapper div#taskNavigationWrapper {
+    width: 20%;
+    height: 90%;
+}

@@ -17,9 +17,11 @@
 package org.exoplatform.addons.codefest.fteam;
 
 import juzu.Path;
+import juzu.Route;
 import juzu.View;
 import juzu.Response;
 import juzu.template.Template;
+import org.exoplatform.addons.codefest.fteam.templates.index;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class Controller {
 
   @Inject
   @Path("index.gtmpl")
-  Template index;
+  org.exoplatform.addons.codefest.fteam.templates.index index;
 
   @View
   public Response.Content index() throws IOException {

@@ -51,13 +51,23 @@
       <artifactId>juzu-plugins-servlet</artifactId>
       <version>${juzu.artifacts.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.juzu</groupId>
+      <artifactId>juzu-plugins-portlet</artifactId>
+      <version>${juzu.artifacts.version}</version>
+    </dependency>
 
     <!-- Servlet 3.x API -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.portlet</groupId>
+      <artifactId>portlet-api</artifactId>
+      <version>2.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -76,23 +86,39 @@
   </dependencies>
 
   <build>
-    <finalName>task-management-portlet</finalName>
-
+    <finalName>${project.artifactId}</finalName>
     <pluginManagement>
       <plugins>
-
-        <!--
-          | Test your application with:
-          | >mvn tomcat7:run-war
-          -->
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
           <version>2.1</version>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <path>/</path>
+                <!-- Use a separation classloader to avoid conflicts with SLF4J -->
+                <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
-
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <configuration>
+          <path>/</path>
+        </configuration>
+      </plugin>
+    </plugins>
 
   </build>
 
