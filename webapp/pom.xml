@@ -32,4 +32,89 @@
   <packaging>war</packaging>
   <name>Codefest 2014 - Team F Addon - Webapp</name>
   <description>Codefest 2014 - Team F Addon - A portlet or any webapp</description>
+  <properties>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <juzu.artifacts.version>1.0.0-cr1</juzu.artifacts.version>
+  </properties>
+
+  <dependencies>
+
+    <!-- Application dependencies-->
+    <dependency>
+      <groupId>org.juzu</groupId>
+      <artifactId>juzu-core</artifactId>
+      <version>${juzu.artifacts.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.juzu</groupId>
+      <artifactId>juzu-plugins-servlet</artifactId>
+      <version>${juzu.artifacts.version}</version>
+    </dependency>
+
+
+    <!-- Servlet 3.x API -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Dependencies for Guice in a Servlet Container -->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>task-management-portlet</finalName>
+
+    <pluginManagement>
+      <plugins>
+
+        <!--
+          | Test your application with:
+          | >mvn tomcat7:run-war
+          -->
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.1</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+
+  </build>
+
+  <!-- Activate this profile for using Juzu live mode -->
+  <profiles>
+    <profile>
+      <id>live</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.tomcat.maven</groupId>
+              <artifactId>tomcat7-maven-plugin</artifactId>
+              <configuration>
+                <systemProperties>
+                  <juzu.run_mode>live</juzu.run_mode>
+                </systemProperties>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
 </project>
