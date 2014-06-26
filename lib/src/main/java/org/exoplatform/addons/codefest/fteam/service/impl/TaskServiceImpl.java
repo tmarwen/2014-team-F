@@ -3,46 +3,59 @@ package org.exoplatform.addons.codefest.fteam.service.impl;
 import org.exoplatform.addons.codefest.fteam.filter.TaskFilter;
 import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
+import org.exoplatform.addons.codefest.fteam.service.util.TaskManagementUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by eXo Platform MEA on 26/06/14.
- *
- * @author <a href="mailto:mtrabelsi@exoplatform.com">Marwen Trabelsi</a>
+ * Created by marwen on 6/26/14.
  */
 public class TaskServiceImpl implements TaskService
 {
-  private static List<TaskBean> mockTasks = new ArrayList<TaskBean>();
 
-  static {
-    if (mockTasks.isEmpty())
-    {
-      TaskBean task1 = new TaskBean(1, "marwen", new Date(), "Description goes here...", 1);
-      TaskBean task2 = new TaskBean(2, "ahmed", new Date(), "Description for task 2 goes here...", 3);
-      mockTasks.add(task1);
-      mockTasks.add(task2);
-    }
-  }
+  private Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
 
   @Override
   public TaskBean getTask(int taskId)
   {
-    return mockTasks.get(taskId);
+    return null;
   }
 
   @Override
   public boolean addTask(TaskBean task)
   {
-    return mockTasks.add(task);
+    Node project = taskManagementRootNode.addNode(task.getId(), TaskManagementUtils.EXO_TASK);
+    project.setProperty(TaskManagementUtils.TASK_OWNER, task.getOwner());
+    project.setProperty(TaskManagementUtils.TASK_DUE_DATE, task.getDueDate());
+    project.setProperty(TaskManagementUtils.TASK_START_DATE, task.getStartDate());
+    project.setProperty(TaskManagementUtils.TASK_TYPE, task.getType().name());
+    project.setProperty(TaskManagementUtils.TASK_STATUS, task.getStatus().name());
+    project.setProperty(TaskManagementUtils.TASK_DESCRIPTION, task.getDescription());
+    project.setProperty(TaskManagementUtils.TASK_ASSIGNEE, task.getAssignee());
+    taskManagementRootNode.save();
   }
+
+  @Override
+  public boolean updateTask(TaskBean task)
+  {
+    Node project = taskManagementRootNode.getNode(task.getId());
+    project.setProperty(TaskManagementUtils.TASK_OWNER, task.getOwner());
+    project.setProperty(TaskManagementUtils.TASK_DUE_DATE, task.getDueDate());
+    project.setProperty(TaskManagementUtils.TASK_START_DATE, task.getStartDate());
+    project.setProperty(TaskManagementUtils.TASK_TYPE, task.getType().name());
+    project.setProperty(TaskManagementUtils.TASK_STATUS, task.getStatus().name());
+    project.setProperty(TaskManagementUtils.TASK_DESCRIPTION, task.getDescription());
+    project.setProperty(TaskManagementUtils.TASK_ASSIGNEE, task.getAssignee());
+    taskManagementRootNode.save();
+  }
+
+  @Override
+  public boo
 
   @Override
   public List<TaskBean> getAllTasks()
   {
-    return mockTasks;
+    return null;
   }
 
   @Override

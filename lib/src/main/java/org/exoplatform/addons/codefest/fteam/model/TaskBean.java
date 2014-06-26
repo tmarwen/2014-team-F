@@ -9,47 +9,111 @@ import java.util.Date;
  */
 public class TaskBean
 {
-  private Integer _id;
-  private String _owner;
-  private Date due_date;
-  private String _description;
-  private int _duration;
+  private int id;
+  private String owner;
+  private Date dueDate;
+  private Date startDate;
+  private TaskType type;
+  private String description;
+  private TaskStatus status;
+  private String assignee;
 
-  public TaskBean(Integer id,
-                  String owner,
-                  Date date,
-                  String description,
-                  int duration)
+  public TaskBean(int _id,
+                  String _owner,
+                  Date due_date,
+                  Date start_date,
+                  TaskType type,
+                  TaskStatus status,
+                  String _description,
+                  String assignee)
   {
-    _id = id;
-    _owner = owner;
-    due_date = date;
-    _description = description;
-    _duration = duration;
+    this.id = _id;
+    this.owner = _owner;
+    this.dueDate = due_date;
+    this.startDate = start_date;
+    this.type = type;
+    this.status = status;
+    this.description = _description;
+    this.assignee = assignee;
   }
 
-  public Integer getId()
+  public int getId()
   {
-    return _id;
+    return id;
+  }
+
+  public void setId(int id)
+  {
+    this.id = id;
   }
 
   public String getOwner()
   {
-    return _owner;
+    return owner;
   }
 
-  public Date getDate()
+  public void setOwner(String owner)
   {
-    return due_date;
+    this.owner = owner;
+  }
+
+  public Date getDueDate()
+  {
+    return dueDate;
+  }
+
+  public void setDueDate(Date dueDate)
+  {
+    this.dueDate = dueDate;
+  }
+
+  public Date getStartDate()
+  {
+    return startDate;
+  }
+
+  public void setStartDate(Date startDate)
+  {
+    this.startDate = startDate;
+  }
+
+  public TaskType getType()
+  {
+    return type;
+  }
+
+  public void setType(TaskType type)
+  {
+    this.type = type;
   }
 
   public String getDescription()
   {
-    return _description;
+    return description;
   }
 
-  public int getDuration()
+  public void setDescription(String description)
   {
-    return _duration;
+    this.description = description;
+  }
+
+  public TaskStatus getStatus()
+  {
+    return status;
+  }
+
+  public void setStatus(TaskStatus status)
+  {
+    this.status = status;
+  }
+
+  public String getAssignee()
+  {
+    return assignee;
+  }
+
+  public void setAssignee(String assignee)
+  {
+    this.assignee = assignee;
   }
 }

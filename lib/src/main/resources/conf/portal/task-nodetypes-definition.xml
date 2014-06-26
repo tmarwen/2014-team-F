@@ -13,35 +13,35 @@
                           protected="true" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_id" requiredType="Long" autoCreated="false" mandatory="true" onParentVersion="COPY"
+      <propertyDefinition name="exo:taskId" requiredType="Long" autoCreated="false" mandatory="true" onParentVersion="COPY"
                           protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_type" requiredType="String" autoCreated="false" mandatory="true"
+      <propertyDefinition name="exo:taskType" requiredType="String" autoCreated="false" mandatory="true"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_due_date" requiredType="String" autoCreated="false" mandatory="false"
+      <propertyDefinition name="exo:taskDueDate" requiredType="String" autoCreated="false" mandatory="false"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_start_date" requiredType="String" autoCreated="false" mandatory="false"
+      <propertyDefinition name="exo:taskStartDate" requiredType="String" autoCreated="false" mandatory="false"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_description" requiredType="String" autoCreated="false" mandatory="false"
+      <propertyDefinition name="exo:taskDescription" requiredType="String" autoCreated="false" mandatory="false"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_owner" requiredType="String" autoCreated="false" mandatory="false"
+      <propertyDefinition name="exo:taskOwner" requiredType="String" autoCreated="false" mandatory="false"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_assignee" requiredType="String" autoCreated="false" mandatory="false"
+      <propertyDefinition name="exo:taskAssignee" requiredType="String" autoCreated="false" mandatory="false"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:task_status" requiredType="String" autoCreated="false" mandatory="false"
+      <propertyDefinition name="exo:taskStatus" requiredType="String" autoCreated="false" mandatory="false"
                           onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
