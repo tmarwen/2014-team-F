@@ -14,7 +14,11 @@ public interface TaskService
 {
   public TaskBean getTask(int taskId);
 
-  public boolean addTask(TaskBean task);
+  public void addTask(TaskBean task);
+
+  public void updateTask(TaskBean task);
+
+  public void removeTask(int id);
 
   public List<TaskBean> getAllTasks();
 

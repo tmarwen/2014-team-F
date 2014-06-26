@@ -18,39 +18,33 @@ public class TaskServiceImpl implements TaskService
   @Override
   public TaskBean getTask(int taskId)
   {
-    return null;
+    Node task = taskManagementRootNode.getNode(taskId);
+    TaskBean taskBean = new TaskBean();
+    return TaskManagementUtils.nodeToBean(task, taskBean);
   }
 
   @Override
-  public boolean addTask(TaskBean task)
+  public void addTask(TaskBean task)
   {
-    Node project = taskManagementRootNode.addNode(task.getId(), TaskManagementUtils.EXO_TASK);
-    project.setProperty(TaskManagementUtils.TASK_OWNER, task.getOwner());
-    project.setProperty(TaskManagementUtils.TASK_DUE_DATE, task.getDueDate());
-    project.setProperty(TaskManagementUtils.TASK_START_DATE, task.getStartDate());
-    project.setProperty(TaskManagementUtils.TASK_TYPE, task.getType().name());
-    project.setProperty(TaskManagementUtils.TASK_STATUS, task.getStatus().name());
-    project.setProperty(TaskManagementUtils.TASK_DESCRIPTION, task.getDescription());
-    project.setProperty(TaskManagementUtils.TASK_ASSIGNEE, task.getAssignee());
+    Node taskNode = taskManagementRootNode.addNode(task.getId(), TaskManagementUtils.EXO_TASK);
+    TaskManagementUtils.beanToNode(task, task);
     taskManagementRootNode.save();
   }
 
   @Override
-  public boolean updateTask(TaskBean task)
+  public void updateTask(TaskBean task)
   {
-    Node project = taskManagementRootNode.getNode(task.getId());
-    project.setProperty(TaskManagementUtils.TASK_OWNER, task.getOwner());
-    project.setProperty(TaskManagementUtils.TASK_DUE_DATE, task.getDueDate());
-    project.setProperty(TaskManagementUtils.TASK_START_DATE, task.getStartDate());
-    project.setProperty(TaskManagementUtils.TASK_TYPE, task.getType().name());
-    project.setProperty(TaskManagementUtils.TASK_STATUS, task.getStatus().name());
-    project.setProperty(TaskManagementUtils.TASK_DESCRIPTION, task.getDescription());
-    project.setProperty(TaskManagementUtils.TASK_ASSIGNEE, task.getAssignee());
+    Node taskNode = taskManagementRootNode.getNode(task.getId());
+    TaskManagementUtils.nodeToBean(taskNode, task);
     taskManagementRootNode.save();
   }
 
   @Override
-  public boo
+  public void removeTask(int id)
+  {
+    taskManagementRootNode.getNode(id).remove();
+    taskManagementRootNode.save();
+  }
 
   @Override
   public List<TaskBean> getAllTasks()

@@ -1,6 +1,8 @@
 package org.exoplatform.addons.codefest.fteam.service.util;
 
 
+import org.exoplatform.addons.codefest.fteam.model.TaskBean;
+
 /**
  * Created by marwen on 6/26/14.
  */
@@ -71,5 +73,29 @@ public class TaskManagementUtils
     String path = nodeHierarchyCreator.getJcrPath("taskManagementRootNode");
     Session session = getSystemSessionProvider().getSession(DEFAULT_WORKSPACE, getRepository());
     return (Node) session.getItem(path);
+  }
+
+  public static TaskBean nodeToBean(Node task, TaskBean taskBean)
+  {
+    taskBean.setOwner(task.getProperty(TASK_OWNER));
+    taskBean.setDueDate(task.getProperty(TASK_DUE_DATE));
+    taskBean.setStartDate(task.getProperty(TASK_START_DATE));
+    taskBean.setType(task.getProperty(TASK_TYPE));
+    taskBean.setStatus(task.getProperty(TASK_STATUS));
+    taskBean.setDescription(task.getProperty(TASK_DESCRIPTION));
+    taskBean.setAssignee(task.getProperty(TASK_ASSIGNEE));
+    return taskBean;
+  }
+
+  public static Node beanToNode(TaskBean task, Node taskNode)
+  {
+    taskNode.setProperty(TASK_OWNER, task.getOwner());
+    taskNode.setProperty(TASK_DUE_DATE, task.getDueDate());
+    taskNode.setProperty(TASK_START_DATE, task.getStartDate());
+    taskNode.setProperty(TASK_TYPE, task.getType().name());
+    taskNode.setProperty(TASK_STATUS, task.getStatus().name());
+    taskNode.setProperty(TASK_DESCRIPTION, task.getDescription());
+    taskNode.setProperty(TASK_ASSIGNEE, task.getAssignee());
+    return taskNode;
   }
 }

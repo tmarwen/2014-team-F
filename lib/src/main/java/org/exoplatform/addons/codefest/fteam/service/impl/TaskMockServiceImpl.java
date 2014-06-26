@@ -22,8 +22,8 @@ public class TaskMockServiceImpl implements TaskService
   static {
     if (mockTasks.isEmpty())
     {
-      TaskBean task1 = new TaskBean(1, "marwen", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description goes here...");
-      TaskBean task2 = new TaskBean(2, "ahmed", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description for task 2 goes here...");
+      TaskBean task1 = new TaskBean(1, "marwen", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description goes here...", "marwen");
+      TaskBean task2 = new TaskBean(2, "ahmed", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description for task 2 goes here...", "space");
       mockTasks.add(task1);
       mockTasks.add(task2);
     }
@@ -36,9 +36,21 @@ public class TaskMockServiceImpl implements TaskService
   }
 
   @Override
-  public boolean addTask(TaskBean task)
+  public void addTask(TaskBean task)
   {
-    return mockTasks.add(task);
+
+  }
+
+  @Override
+  public void updateTask(TaskBean task)
+  {
+
+  }
+
+  @Override
+  public void removeTask(int id)
+  {
+
   }
 
   @Override
