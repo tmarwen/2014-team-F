@@ -46,9 +46,8 @@
     </div>
 
     <div class="tab-pane fade" id="addTaskContainer">
-      <p>Add Task</p>
       <div id="addTaskForm">
-        <form class="form-horizontal">
+        <form action="" method="post" class="form-horizontal">
         <fieldset>
 
         <!-- Form Name -->
@@ -155,7 +154,7 @@
         <div class="control-group">
           <label class="control-label" for="addTask"></label>
           <div class="controls">
-            <button id="addTask" name="addTask" class="btn btn-primary">Add</button>
+            <button id="addTask" name="addTask" class="btn btn-primary" type="submit">Add</button>
           </div>
         </div>
 

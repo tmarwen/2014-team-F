@@ -16,17 +16,20 @@
 
 package org.exoplatform.addons.codefest.fteam;
 
+import juzu.Action;
 import juzu.Path;
+import juzu.Response;
 import juzu.Route;
 import juzu.View;
-import juzu.Response;
-import juzu.template.Template;
+import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
+import org.exoplatform.addons.codefest.fteam.service.mapper.TaskBeanMapper;
 
 import javax.inject.Inject;
 import java.io.IOException;
 
-public class Controller {
+public class Controller
+{
 
   @Inject
   @Path("index.gtmpl")
@@ -34,20 +37,39 @@ public class Controller {
 
   @Inject
   @Path("task.gtmpl")
-  Template task;
+  org.exoplatform.addons.codefest.fteam.templates.task task;
 
   @Inject
   TaskService taskService;
 
   @View
-  public Response.Content index() throws IOException {
+  public Response.Content index() throws IOException
+  {
     return index.ok();
   }
 
   @View
-  @Route("/json")
-  public Response task() {
-    return task.ok();
+  @Route("/task")
+  public Response.Content task(String taskId)
+  {
+    TaskBean taskBean = taskService.getTask(taskId);
+    return task.with().task(taskBean).ok();
+  }
+
+  @Action
+  @Route("/addTask/{taskId}")
+  public Response.View addTask(String taskId,
+                               String taskDescription,
+                               String taskDueDate,
+                               String taskStartDate,
+                               String taskType,
+                               String taskAssignee,
+                               String taskProject,
+                               String taskTrigger)
+  {
+    TaskBean taskBean = TaskBeanMapper.mapStringifiedTask(taskId, taskDueDate, taskStartDate, taskType, taskDescription, taskAssignee, taskProject, taskTrigger);
+    taskService.addTask(taskBean);
+    return Controller_.task(taskBean.getId());
   }
 
 }

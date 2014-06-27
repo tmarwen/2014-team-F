@@ -12,6 +12,10 @@
        <name>juzu.app_name</name>
        <value>org.exoplatform.addons.codefest.fteam</value>
      </init-param>
+     <init-param>
+       <name>juzu.run_mode</name>
+       <value>live</value>
+     </init-param>
      <supports>
        <mime-type>text/html</mime-type>
      </supports>
