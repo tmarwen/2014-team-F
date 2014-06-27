@@ -1,7 +1,25 @@
 package org.exoplatform.addons.codefest.fteam.service.util;
 
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.exoplatform.addons.codefest.fteam.model.TaskBean;
+import org.exoplatform.addons.codefest.fteam.model.TaskStatus;
+import org.exoplatform.addons.codefest.fteam.model.TaskType;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.RootContainer;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
 /**
  * Created by marwen on 6/26/14.
@@ -31,7 +49,7 @@ public class TaskManagementUtils
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     if (container.getComponentInstanceOfType(clazz) == null)
     {
-      containerName = PortalContainer.getCurrentPortalContainerName();
+      String containerName = PortalContainer.getCurrentPortalContainerName();
       container = RootContainer.getInstance().getPortalContainer(containerName);
     }
     return clazz.cast(container.getComponentInstanceOfType(clazz));
@@ -62,40 +80,63 @@ public class TaskManagementUtils
     return null;
   }
 
-  public static Session getSystemSession()
+  public static Session getSystemSession() throws RepositoryException
   {
     return getSystemSessionProvider().getSession(DEFAULT_WORKSPACE, getRepository());
   }
 
-  public static Node getTaskManagementRootNode() throws RepositoryException
+  public static Node getTaskManagementRootNode()
   {
     NodeHierarchyCreator nodeHierarchyCreator = getService(NodeHierarchyCreator.class);
     String path = nodeHierarchyCreator.getJcrPath("taskManagementRootNode");
-    Session session = getSystemSessionProvider().getSession(DEFAULT_WORKSPACE, getRepository());
-    return (Node) session.getItem(path);
+    Session session;
+    try
+    {
+      session = getSystemSessionProvider().getSession(DEFAULT_WORKSPACE, getRepository());
+      return (Node) session.getItem(path);
+    } catch (RepositoryException e)
+    {
+      LOG.error(String.format("Exception while retrieving root Task Management Node, root node for %s workspace will be used instead...",
+              DEFAULT_WORKSPACE),
+          e);
+      return null;
+    }
   }
 
   public static TaskBean nodeToBean(Node task, TaskBean taskBean)
   {
-    taskBean.setOwner(task.getProperty(TASK_OWNER));
-    taskBean.setDueDate(task.getProperty(TASK_DUE_DATE));
-    taskBean.setStartDate(task.getProperty(TASK_START_DATE));
-    taskBean.setType(task.getProperty(TASK_TYPE));
-    taskBean.setStatus(task.getProperty(TASK_STATUS));
-    taskBean.setDescription(task.getProperty(TASK_DESCRIPTION));
-    taskBean.setAssignee(task.getProperty(TASK_ASSIGNEE));
+    try
+    {
+      taskBean.setId(task.getProperty(TASK_ID).getLong());
+      taskBean.setOwner(task.getProperty(TASK_OWNER).getString());
+      taskBean.setDueDate(task.getProperty(TASK_DUE_DATE).getDate().getTime());
+      taskBean.setStartDate(task.getProperty(TASK_START_DATE).getDate().getTime());
+      taskBean.setType(TaskType.valueOf(task.getProperty(TASK_TYPE).getString().toUpperCase()));
+      taskBean.setStatus(TaskStatus.valueOf(task.getProperty(TASK_STATUS).getString().toUpperCase()));
+      taskBean.setDescription(task.getProperty(TASK_DESCRIPTION).getString());
+      taskBean.setAssignee(task.getProperty(TASK_ASSIGNEE).getString());
+    } catch (RepositoryException e)
+    {
+      LOG.error("An error occurred while mapping Task JCR Node to a Bean: ", e);
+    }
     return taskBean;
   }
 
   public static Node beanToNode(TaskBean task, Node taskNode)
   {
-    taskNode.setProperty(TASK_OWNER, task.getOwner());
-    taskNode.setProperty(TASK_DUE_DATE, task.getDueDate());
-    taskNode.setProperty(TASK_START_DATE, task.getStartDate());
-    taskNode.setProperty(TASK_TYPE, task.getType().name());
-    taskNode.setProperty(TASK_STATUS, task.getStatus().name());
-    taskNode.setProperty(TASK_DESCRIPTION, task.getDescription());
-    taskNode.setProperty(TASK_ASSIGNEE, task.getAssignee());
+    try
+    {
+      taskNode.setProperty(TASK_OWNER, task.getOwner());
+      taskNode.setProperty(TASK_DUE_DATE, DateFormatUtils.SMTP_DATETIME_FORMAT.format(task.getDueDate()));
+      taskNode.setProperty(TASK_START_DATE, DateFormatUtils.SMTP_DATETIME_FORMAT.format(task.getStartDate()));
+      taskNode.setProperty(TASK_TYPE, task.getType().name());
+      taskNode.setProperty(TASK_STATUS, task.getStatus().name());
+      taskNode.setProperty(TASK_DESCRIPTION, task.getDescription());
+      taskNode.setProperty(TASK_ASSIGNEE, task.getAssignee());
+    } catch (RepositoryException e)
+    {
+      LOG.error("An error occurred while mapping Task Bean to a JCR Node: ", e);
+    }
     return taskNode;
   }
 }

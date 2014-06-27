@@ -1,5 +1,8 @@
 package org.exoplatform.addons.codefest.fteam.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Date;
 
 /**
@@ -9,7 +12,7 @@ import java.util.Date;
  */
 public class TaskBean
 {
-  private int id;
+  private long id;
   private String owner;
   private Date dueDate;
   private Date startDate;
@@ -18,7 +21,9 @@ public class TaskBean
   private TaskStatus status;
   private String assignee;
 
-  public TaskBean(int _id,
+  public TaskBean() {}
+
+  public TaskBean(long _id,
                   String _owner,
                   Date due_date,
                   Date start_date,
@@ -37,12 +42,12 @@ public class TaskBean
     this.assignee = assignee;
   }
 
-  public int getId()
+  public long getId()
   {
     return id;
   }
 
-  public void setId(int id)
+  public void setId(long id)
   {
     this.id = id;
   }
@@ -115,5 +120,25 @@ public class TaskBean
   public void setAssignee(String assignee)
   {
     this.assignee = assignee;
+  }
+
+  public int hashCode()
+  {
+    return new HashCodeBuilder(17, 31).
+        append(id).
+        toHashCode();
+  }
+
+  public boolean equals(Object obj)
+  {
+    if (!(obj instanceof TaskBean))
+      return false;
+    if (obj == this)
+      return true;
+
+    TaskBean task = (TaskBean) obj;
+    return new EqualsBuilder().
+        append(id, task.id).
+        isEquals();
   }
 }

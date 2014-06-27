@@ -3,6 +3,13 @@ package org.exoplatform.addons.codefest.fteam.service;
 import org.exoplatform.addons.codefest.fteam.filter.TaskFilter;
 import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 
+import javax.jcr.ItemExistsException;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.version.VersionException;
 import java.util.List;
 
 /**
@@ -12,15 +19,15 @@ import java.util.List;
  */
 public interface TaskService
 {
-  public TaskBean getTask(int taskId);
+  public TaskBean getTask(long taskId) throws RepositoryException;
 
-  public void addTask(TaskBean task);
+  public void addTask(TaskBean task) throws RepositoryException;
 
-  public void updateTask(TaskBean task);
+  public void updateTask(TaskBean task) throws RepositoryException;
 
-  public void removeTask(int id);
+  public void removeTask(long id) throws RepositoryException;
 
-  public List<TaskBean> getAllTasks();
+  public List<TaskBean> getAllTasks() throws RepositoryException;
 
-  List<TaskBean> listByFilter(TaskFilter filter);
+  java.util.Map<String, List<TaskBean>> listByFilter(TaskFilter filter) throws RepositoryException;
 }

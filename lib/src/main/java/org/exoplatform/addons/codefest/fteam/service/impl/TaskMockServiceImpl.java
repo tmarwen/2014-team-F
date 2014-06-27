@@ -6,6 +6,7 @@ import org.exoplatform.addons.codefest.fteam.model.TaskStatus;
 import org.exoplatform.addons.codefest.fteam.model.TaskType;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
 
+import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,9 +31,9 @@ public class TaskMockServiceImpl implements TaskService
   }
 
   @Override
-  public TaskBean getTask(int taskId)
+  public TaskBean getTask(long taskId) throws RepositoryException
   {
-    return mockTasks.get(taskId);
+    return mockTasks.get((int) taskId);
   }
 
   @Override
@@ -48,7 +49,7 @@ public class TaskMockServiceImpl implements TaskService
   }
 
   @Override
-  public void removeTask(int id)
+  public void removeTask(long id) throws RepositoryException
   {
 
   }
@@ -60,7 +61,7 @@ public class TaskMockServiceImpl implements TaskService
   }
 
   @Override
-  public List<TaskBean> listByFilter(TaskFilter filter)
+  public java.util.Map<String, List<TaskBean>> listByFilter(TaskFilter filter)
   {
     return null;
   }
