@@ -3,7 +3,7 @@
 
 <div id="taskContainerWrapper">
 
-  <div id="taskHeader" class="header">
+  <div id="taskHeader" class="page-header">
     Task Management Application
   </div>
 
@@ -145,7 +145,7 @@
           <label class="control-label" for="taskTrigger">You want to start now?</label>
           <div class="controls">
             <label class="checkbox" for="taskTrigger-0">
-              <input name="taskTrigger" id="taskTrigger-0" value="Start Immediatelly" type="checkbox">
+              <input id="taskTrigger" name="taskTrigger" id="taskTrigger-0" value="Start Immediatelly" type="checkbox">
               Start Immediatelly
             </label>
           </div>

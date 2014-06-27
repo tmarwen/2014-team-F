@@ -22,7 +22,6 @@ import juzu.View;
 import juzu.Response;
 import juzu.template.Template;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
-import org.exoplatform.addons.codefest.fteam.templates.index;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -34,10 +33,21 @@ public class Controller {
   org.exoplatform.addons.codefest.fteam.templates.index index;
 
   @Inject
+  @Path("task.gtmpl")
+  Template task;
+
+  @Inject
   TaskService taskService;
 
   @View
   public Response.Content index() throws IOException {
     return index.ok();
   }
+
+  @View
+  @Route("/json")
+  public Response task() {
+    return task.ok();
+  }
+
 }
