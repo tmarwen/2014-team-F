@@ -17,12 +17,8 @@
 package org.exoplatform.addons.codefest.fteam;
 
 import juzu.Path;
-import juzu.Route;
-import juzu.View;
 import juzu.Response;
-import juzu.template.Template;
-import org.exoplatform.addons.codefest.fteam.service.TaskService;
-import org.exoplatform.addons.codefest.fteam.templates.index;
+import juzu.View;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -33,8 +29,8 @@ public class Controller {
   @Path("index.gtmpl")
   org.exoplatform.addons.codefest.fteam.templates.index index;
 
-  @Inject
-  TaskService taskService;
+//  @Inject
+//  TaskService taskService;
 
   @View
   public Response.Content index() throws IOException {
