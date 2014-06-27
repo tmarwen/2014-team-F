@@ -19,15 +19,15 @@ import java.util.List;
  */
 public interface TaskService
 {
-  public TaskBean getTask(long taskId) throws RepositoryException;
+  public TaskBean getTask(String taskId);
 
-  public void addTask(TaskBean task) throws RepositoryException;
+  public void addTask(TaskBean task);
 
-  public void updateTask(TaskBean task) throws RepositoryException;
+  public void updateTask(TaskBean task);
 
-  public void removeTask(long id) throws RepositoryException;
+  public void removeTask(String id);
 
-  public List<TaskBean> getAllTasks() throws RepositoryException;
+  public List<TaskBean> getAllTasks();
 
-  java.util.Map<String, List<TaskBean>> listByFilter(TaskFilter filter) throws RepositoryException;
+  java.util.Map<String, List<TaskBean>> listByFilter(TaskFilter filter);
 }

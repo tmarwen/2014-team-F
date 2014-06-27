@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class TaskBean
 {
-  private long id;
+  private String id;
   private String owner;
   private Date dueDate;
   private Date startDate;
@@ -23,7 +23,7 @@ public class TaskBean
 
   public TaskBean() {}
 
-  public TaskBean(long _id,
+  public TaskBean(String _id,
                   String _owner,
                   Date due_date,
                   Date start_date,
@@ -42,12 +42,12 @@ public class TaskBean
     this.assignee = assignee;
   }
 
-  public long getId()
+  public String getId()
   {
     return id;
   }
 
-  public void setId(long id)
+  public void setId(String id)
   {
     this.id = id;
   }

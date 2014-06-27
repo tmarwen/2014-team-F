@@ -6,6 +6,8 @@ import org.exoplatform.addons.codefest.fteam.model.TaskStatus;
 import org.exoplatform.addons.codefest.fteam.model.TaskType;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
 import org.exoplatform.addons.codefest.fteam.service.util.TaskManagementUtils;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -20,55 +22,88 @@ import java.util.Map;
  */
 public class TaskServiceImpl implements TaskService
 {
+  private static final Log LOG = ExoLogger.getLogger("org.exoplatform.addons.codefest.fteam.service.impl.TaskServiceImpl");
 
   private Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
 
   @Override
-  public TaskBean getTask(long taskId) throws RepositoryException
+  public TaskBean getTask(String taskId)
   {
-    Node task = taskManagementRootNode.getNode(String.valueOf(taskId));
+    Node task = null;
+    try
+    {
+      task = taskManagementRootNode.getNode(taskId);
+    } catch (RepositoryException e)
+    {
+      LOG.error("Error while retrieving task: ", e);
+    }
     TaskBean taskBean = new TaskBean();
     return TaskManagementUtils.nodeToBean(task, taskBean);
   }
 
   @Override
-  public void addTask(TaskBean task) throws RepositoryException
+  public void addTask(TaskBean task)
   {
-    Node taskNode = taskManagementRootNode.addNode(String.valueOf(task.getId()),
-        TaskManagementUtils.EXO_TASK);
-    TaskManagementUtils.beanToNode(task, taskNode);
-    taskManagementRootNode.save();
+    Node taskNode;
+    try
+    {
+      taskNode = taskManagementRootNode.addNode(task.getId(), TaskManagementUtils.EXO_TASK);
+      TaskManagementUtils.beanToNode(task, taskNode);
+      taskManagementRootNode.save();
+    } catch (RepositoryException e)
+    {
+      LOG.error("Error while adding task: ", e);
+    }
   }
 
   @Override
-  public void updateTask(TaskBean task) throws RepositoryException
+  public void updateTask(TaskBean task)
   {
-    Node taskNode = taskManagementRootNode.getNode(String.valueOf(task.getId()));
-    TaskManagementUtils.nodeToBean(taskNode, task);
-    taskManagementRootNode.save();
+    Node taskNode;
+    try
+    {
+      taskNode = taskManagementRootNode.getNode(task.getId());
+      TaskManagementUtils.nodeToBean(taskNode, task);
+      taskManagementRootNode.save();
+    } catch (RepositoryException e)
+    {
+      LOG.error("Error while updating task: ", e);
+    }
   }
 
   @Override
-  public void removeTask(long taskId) throws RepositoryException
+  public void removeTask(String taskId)
   {
-    taskManagementRootNode.getNode(String.valueOf(taskId)).remove();
-    taskManagementRootNode.save();
+    try
+    {
+      taskManagementRootNode.getNode(taskId).remove();
+      taskManagementRootNode.save();
+    } catch (RepositoryException e)
+    {
+      LOG.error("Error while removing task: ", e);
+    }
   }
 
   @Override
-  public List<TaskBean> getAllTasks() throws RepositoryException
+  public List<TaskBean> getAllTasks()
   {
     List<TaskBean> tasks = new ArrayList<TaskBean>();
-    for (NodeIterator nodeIterator = taskManagementRootNode.getNodes(); nodeIterator.hasNext();)
+    try
     {
-      Node node = nodeIterator.nextNode();
-      tasks.add(TaskManagementUtils.nodeToBean(node, new TaskBean()));
+      for (NodeIterator nodeIterator = taskManagementRootNode.getNodes(); nodeIterator.hasNext();)
+      {
+        Node node = nodeIterator.nextNode();
+        tasks.add(TaskManagementUtils.nodeToBean(node, new TaskBean()));
+      }
+    } catch (RepositoryException e)
+    {
+      LOG.error("Error while loading all tasks: ", e);
     }
     return tasks;
   }
 
   @Override
-  public Map<String, List<TaskBean>> listByFilter(TaskFilter filter) throws RepositoryException
+  public Map<String, List<TaskBean>> listByFilter(TaskFilter filter)
   {
     Map<String, List<TaskBean>> tasks = new HashMap<String, List<TaskBean>>();
     List<TaskBean> allTasks = getAllTasks();

@@ -107,7 +107,7 @@ public class TaskManagementUtils
   {
     try
     {
-      taskBean.setId(task.getProperty(TASK_ID).getLong());
+      taskBean.setId(task.getProperty(TASK_ID).getString());
       taskBean.setOwner(task.getProperty(TASK_OWNER).getString());
       taskBean.setDueDate(task.getProperty(TASK_DUE_DATE).getDate().getTime());
       taskBean.setStartDate(task.getProperty(TASK_START_DATE).getDate().getTime());

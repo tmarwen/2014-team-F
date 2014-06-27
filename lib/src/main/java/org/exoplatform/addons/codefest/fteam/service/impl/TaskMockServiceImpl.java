@@ -23,17 +23,17 @@ public class TaskMockServiceImpl implements TaskService
   static {
     if (mockTasks.isEmpty())
     {
-      TaskBean task1 = new TaskBean(1, "marwen", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description goes here...", "marwen");
-      TaskBean task2 = new TaskBean(2, "ahmed", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description for task 2 goes here...", "space");
+      TaskBean task1 = new TaskBean("fistTask", "marwen", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description goes here...", "marwen");
+      TaskBean task2 = new TaskBean("secondTask", "ahmed", new Date(), new Date(), TaskType.PERSONAL, TaskStatus.TODO, "Description for task 2 goes here...", "space");
       mockTasks.add(task1);
       mockTasks.add(task2);
     }
   }
 
   @Override
-  public TaskBean getTask(long taskId) throws RepositoryException
+  public TaskBean getTask(String taskId)
   {
-    return mockTasks.get((int) taskId);
+    return mockTasks.get(Integer.parseInt(taskId));
   }
 
   @Override
@@ -49,7 +49,7 @@ public class TaskMockServiceImpl implements TaskService
   }
 
   @Override
-  public void removeTask(long id) throws RepositoryException
+  public void removeTask(String id)
   {
 
   }
