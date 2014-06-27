@@ -83,6 +83,13 @@
       <version>3.0</version>
     </dependency>
 
+    <!-- Module dependency -->
+    <dependency>
+      <groupId>org.exoplatform.addons.codefest.team_f</groupId>
+      <artifactId>team-f-addon-lib</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
