@@ -1,0 +1,9 @@
+#{title value=Task_Details/}
+#{param name=id/}
+#{param name=owner/}
+#{param name=dueDate/}
+#{param name=startDate/}
+#{param name=type/}
+#{param name=description/}
+#{param name=status/}
+#{param name=assignee/}
