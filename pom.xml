@@ -73,7 +73,12 @@
       <dependency>
         <groupId>org.exoplatform.jcr</groupId>
         <artifactId>exo.jcr.component.ext</artifactId>
-        <version>1.15.9-GA</version>
+        <version>1.15.9-GA-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.3.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
