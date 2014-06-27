@@ -18,12 +18,17 @@
 @Servlet(value = "/")
 @Portlet
 @Scripts({
-    @Script( id="jquery.js", value= "//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js", location = AssetLocation.URL),
-    @Script( id="bootstrap.js", value = "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js", location = AssetLocation.URL)
+    @Script( id="jquery", value= "//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js",
+        location = AssetLocation.URL),
+    @Script( id="bootstrap", value = "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js",
+        location = AssetLocation.URL,
+    depends = "jquery")
 })
+@Assets("*")
 package org.exoplatform.addons.codefest.fteam;
 
 import juzu.asset.AssetLocation;
+import juzu.plugin.asset.Assets;
 import juzu.plugin.asset.Script;
 import juzu.plugin.asset.Scripts;
 import juzu.plugin.portlet.Portlet;

@@ -3,6 +3,7 @@ package org.exoplatform.addons.codefest.fteam.service;
 import org.exoplatform.addons.codefest.fteam.filter.TaskFilter;
 import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 
+import javax.inject.Named;
 import javax.jcr.ItemExistsException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
@@ -17,6 +18,7 @@ import java.util.List;
  *
  * @author <a href="mailto:mtrabelsi@exoplatform.com">Marwen Trabelsi</a>
  */
+@Named("TaskService")
 public interface TaskService
 {
   public TaskBean getTask(String taskId);

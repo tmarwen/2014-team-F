@@ -12,6 +12,7 @@ import org.exoplatform.services.rest.resource.ResourceContainer;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
@@ -26,6 +27,7 @@ import java.util.List;
  *
  * @author <a href="mailto:mtrabelsi@exoplatform.com">Marwen Trabelsi</a>
  */
+@Path("/task-rest-manager")
 public class TaskRestService implements ResourceContainer
 {
   private static final Log LOG = ExoLogger.getLogger(TaskService.class);
@@ -49,6 +51,7 @@ public class TaskRestService implements ResourceContainer
 
   @GET
   @Path("/getTask/{taskId}")
+  @Produces(MediaType.APPLICATION_JSON)
   public Response getTaskOfProject(@PathParam("taskId") String taskId)
       throws Exception
   {
@@ -58,7 +61,7 @@ public class TaskRestService implements ResourceContainer
   }
 
   @GET
-  @Path("/getAllTask/")
+  @Path("/getAllTask")
   public Response getAllProject() throws Exception
   {
     List<TaskBean> tasks = _taskService.getAllTasks();
@@ -67,7 +70,7 @@ public class TaskRestService implements ResourceContainer
 
 
   @GET
-  @Path("/createTask/")
+  @Path("/createTask")
   public void createTask(@QueryParam("taskId") long taskId,
                          @QueryParam("owner") String owner,
                          @QueryParam("dueDate") String dueDate,
@@ -116,7 +119,7 @@ public class TaskRestService implements ResourceContainer
   }
 
   @GET
-  @Path("/updatetask/")
+  @Path("/updatetask")
   public void updateTask(@QueryParam("taskId") long taskId,
                          @QueryParam("owner") String owner,
                          @QueryParam("dueDate") String dueDate,

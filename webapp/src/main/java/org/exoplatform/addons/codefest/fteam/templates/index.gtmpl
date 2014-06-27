@@ -47,7 +47,7 @@
 
     <div class="tab-pane fade" id="addTaskContainer">
       <div id="addTaskForm">
-        <form action="" method="post" class="form-horizontal">
+        <form action="@{addTask()}" method="post" class="form-horizontal">
         <fieldset>
 
         <!-- Form Name -->

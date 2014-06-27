@@ -24,9 +24,14 @@
                xmlns="http://www.exoplaform.org/xml/ns/kernel_1_2.xsd">
 
   <!-- Task Management Related Services -->
-  <component profiles="all">
+  <component>
     <key>org.exoplatform.addons.codefest.fteam.service.TaskService</key>
     <type>org.exoplatform.addons.codefest.fteam.service.impl.TaskMockServiceImpl</type>
+  </component>
+
+  <component>
+    <key>org.exoplatform.addons.codefest.fteam.service.rest.TaskRestService</key>
+    <type>org.exoplatform.addons.codefest.fteam.service.rest.TaskRestService</type>
   </component>
 
   <!-- Import exo:task Nodetype -->

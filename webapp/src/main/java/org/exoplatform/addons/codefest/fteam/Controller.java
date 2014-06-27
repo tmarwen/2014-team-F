@@ -16,9 +16,15 @@
 
 package org.exoplatform.addons.codefest.fteam;
 
+import juzu.Action;
 import juzu.Path;
 import juzu.Response;
+import juzu.Route;
 import juzu.View;
+import org.exoplatform.addons.codefest.fteam.model.TaskBean;
+import org.exoplatform.addons.codefest.fteam.service.TaskService;
+import org.exoplatform.addons.codefest.fteam.service.mapper.TaskBeanMapper;
+import org.exoplatform.addons.codefest.fteam.service.util.TaskManagementUtils;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -29,11 +35,39 @@ public class Controller {
   @Path("index.gtmpl")
   org.exoplatform.addons.codefest.fteam.templates.index index;
 
-//  @Inject
-//  TaskService taskService;
+  @Inject
+  @Path("task.gtmpl")
+  org.exoplatform.addons.codefest.fteam.templates.task task;
+
 
   @View
   public Response.Content index() throws IOException {
     return index.ok();
+  }
+
+  @View
+  @Route("/task/{taskId}")
+  public Response.Content task(String taskId)
+  {
+    TaskService taskService = TaskManagementUtils.getService(TaskService.class);
+    TaskBean taskBean = taskService.getTask(taskId);
+    return task.with().task(taskBean).ok();
+  }
+
+  @Action
+  @Route("/addTask")
+  public Response.View addTask(String taskId,
+                               String taskDescription,
+                               String taskDueDate,
+                               String taskStartDate,
+                               String taskType,
+                               String taskAssignee,
+                               String taskProject,
+                               String taskTrigger)
+  {
+    TaskService taskService = TaskManagementUtils.getService(TaskService.class);
+    TaskBean taskBean = TaskBeanMapper.mapStringifiedTask(taskId, taskDueDate, taskStartDate, taskType, taskDescription, taskAssignee, taskProject, taskTrigger);
+    taskService.addTask(taskBean);
+    return Controller_.task(taskBean.getId());
   }
 }
