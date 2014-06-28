@@ -63,9 +63,20 @@
   </module>
 
   <module>
-    <name>TaskManagementTimePicker</name>
+    <name>JQueryTimePicker</name>
     <script>
       <path>/javascript/jquery/timepicker/jquery.timepicker.js</path>
+    </script>
+    <depends>
+      <module>jquery-1.11.1</module>
+      <as>jQuery</as>
+    </depends>
+  </module>
+
+  <module>
+    <name>BootstrapDatePicker</name>
+    <script>
+      <path>/javascript/jquery/datepair/bootstrap-datepicker.js</path>
     </script>
     <depends>
       <module>jquery-1.11.1</module>
@@ -97,15 +108,18 @@
       <module>jQueryUI</module>
     </depends>
     <depends>
-      <module>TaskManagementTimePicker</module>
+      <module>JQueryTimePicker</module>
+    </depends>
+    <depends>
+      <module>BootstrapDatePicker</module>
     </depends>
     <depends>
       <module>socialPlugin</module>
     </depends>
-    <depends>
+    <!--depends>
       <module>bootstrap-3.2.0</module>
       <as>customBts</as>
-    </depends>
+    </depends-->
   </module>
 
 </gatein-resources>

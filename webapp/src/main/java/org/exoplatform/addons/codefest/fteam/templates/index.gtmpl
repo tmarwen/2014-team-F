@@ -1,166 +1,142 @@
 #{title value=Task_Management_Application/}
 #{param name=task/}
 
-<div id="taskContainerWrapper">
+<div id="taskManagementPortlet">
 
-  <div id="taskHeader" class="page-header">
-    Task Management Application
-  </div>
+  <div id="taskOperationTabs">
 
-  <ul id="taskNavigationContainer" class="nav nav-pills">
-    <li class="active dropdown">
-      <a class="glyphicon glyphicon-search dropdown-toggle" data-toggle="dropdown" href="#">
-        Task List <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-        <li><a  href="#allTasks" tabindex="-1" data-toggle="tab">All</a></li>
-        <li><a href="#todoTasks" tabindex="-1" data-toggle="tab">Todo</a></li>
-        <li><a href="#inProgressTasks" tabindex="-1" data-toggle="tab">In Progress</a></li>
-        <li><a href="#doneTasks" tabindex="-1" data-toggle="tab">Done</a></li>
-        <li class="divider"></li>
-        <li><a href="#perProject" tabindex="-1" data-toggle="tab">Per Project</a></li>
-      </ul>
-    </li>
-    <li><a class="glyphicon glyphicon-plus-sign" href="#addTaskContainer" tabindex="-1" data-toggle="tab">Add Task</a></li>
-  </ul>
+    <ul>
+      <li><a href="#addTaskTab">Add a Task</a></li>
+      <li><a href="#taskListTab">Visualize Tasks</a></li>
+    </ul>
 
-  <div id="taskContentContainer" class="tab-content">
-    <div class="tab-pane fade in active" id="allTasks">
-      <p>All tasks here</p>
-    </div>
+    <div id="addTaskTab">
 
-    <div class="tab-pane fade" id="todoTasks">
-      <p>Todo</p>
-    </div>
-
-    <div class="tab-pane fade" id="inProgressTasks">
-      <p>In Progress</p>
-    </div>
-
-    <div class="tab-pane fade" id="doneTasks">
-      <p>Done</p>
-    </div>
-
-    <div class="tab-pane fade" id="perProject">
-      <p>Per Project</p>
-    </div>
-
-    <div class="tab-pane fade" id="addTaskContainer">
       <div id="addTaskForm">
         <form action="@{addTask()}" method="post" class="form-horizontal">
-        <fieldset>
+          <fieldset>
 
-        <!-- Form Name -->
-        <legend>Add Task</legend>
+            <!-- Form Name -->
+            <legend>Add Task</legend>
 
-        <!-- Text input-->
-        <div class="control-group">
-          <label class="control-label" for="taskId">ID</label>
-          <div class="controls">
-            <input id="taskId" name="taskId" placeholder="Please Insert a Task ID" class="input-large" required="" type="text">
+            <!-- Text input-->
+            <div class="control-group">
+              <label class="control-label" for="taskId">ID</label>
+              <div class="controls">
+                <input id="taskId" name="taskId" placeholder="Please Insert a Task ID" class="input-large" required="" type="text">
 
-          </div>
-        </div>
-
-        <!-- Textarea -->
-        <div class="control-group">
-          <label class="control-label" for="taskDescription">Description</label>
-          <div class="controls">
-            <textarea id="taskDescription" name="taskDescription">You can provide more details about the task...</textarea>
-          </div>
-        </div>
-
-        <!-- Text input-->
-        <div class="control-group">
-          <label class="control-label" for="taskStartDate">Start Date</label>
-          <div class="controls">
-            <input id="taskStartDate" name="taskStartDate" placeholder="Choose when to start this task" class="input-large" type="text">
-
-          </div>
-        </div>
-
-        <!-- Text input-->
-        <div class="control-group">
-          <label class="control-label" for="taskDueDate">Due Date</label>
-          <div class="controls">
-            <input id="taskDueDate" name="taskDueDate" placeholder="Choose the Due Date for this task" class="input-large" type="text">
-
-          </div>
-        </div>
-
-        <!-- Multiple Radios -->
-        <div class="control-group">
-          <label class="control-label" for="taskType">Choose a Type</label>
-          <div class="controls">
-            <label class="radio" for="taskType-0">
-              <input name="taskType" id="taskType-0" value="Personal" checked="checked" type="radio">
-              Personal
-            </label>
-            <label class="radio" for="taskType-1">
-              <input name="taskType" id="taskType-1" value="Project" type="radio">
-              Project
-            </label>
-          </div>
-        </div>
-
-        <!-- Button Drop Down -->
-        <div class="control-group">
-          <label class="control-label" for="taskProject">Select the Project</label>
-          <div class="controls">
-            <div class="input-append">
-              <input id="taskProject" name="taskProject" class="input-large" placeholder="Choose the Space to link the task to..." required="" type="text">
-              <div class="btn-group">
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  Spaces
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                </ul>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Button Drop Down -->
-        <div class="control-group">
-          <label class="control-label" for="taskAssignee">Select an Assignee</label>
-          <div class="controls">
-            <div class="input-append">
-              <input id="taskAssignee" name="taskAssignee" class="input-large" placeholder="Choose an Assignee from the Space" required="" type="text">
-              <div class="btn-group">
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  Assignee
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                </ul>
+            <!-- Textarea -->
+            <div class="control-group">
+              <label class="control-label" for="taskDescription">Description</label>
+              <div class="controls">
+                <textarea id="taskDescription" name="taskDescription"></textarea>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Multiple Checkboxes -->
-        <div class="control-group">
-          <label class="control-label" for="taskTrigger">You want to start now?</label>
-          <div class="controls">
-            <label class="checkbox" for="taskTrigger-0">
-              <input id="taskTrigger" name="taskTrigger" id="taskTrigger-0" value="Start Immediatelly" type="checkbox">
-              Start Immediatelly
-            </label>
-          </div>
-        </div>
+            <div id="startEndTaskDateCouple">
 
-        <!-- Button -->
-        <div class="control-group">
-          <label class="control-label" for="addTask"></label>
-          <div class="controls">
-            <button id="addTask" name="addTask" class="btn btn-primary" type="submit">Add</button>
-          </div>
-        </div>
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="taskStartDate">Start Date</label>
+                <div class="controls">
+                  <input id="taskStartDate" name="taskStartDate" placeholder="Choose when to start this task"
+                         class="input-large date start" type="text">
+                </div>
+              </div>
 
-        </fieldset>
+              <!-- Text input-->
+              <div class="control-group">
+                <div class="controls">
+                  <input id="taskStartTime" name="taskStartTime" placeholder="Choose a time"
+                         class="input-medium time start" type="text">
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="taskDueDate">Due Date</label>
+                <div class="controls">
+                  <input id="taskDueDate" name="taskDueDate" placeholder="Choose the Due Date for this task"
+                         class="input-large date end" type="text">
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="control-group">
+                <div class="controls">
+                  <input id="taskDueTime" name="taskDueTime" placeholder="Choose a time" class="input-medium time end"
+                         type="text">
+                </div>
+              </div>
+            </div>
+
+            <!-- Multiple Radios -->
+            <div id="taskTypeWrapper" class="control-group">
+              <label class="control-label" for="taskType">Choose a Type</label>
+              <div class="controls">
+                <label class="radio" for="projectTask">
+                  <input name="taskType" id="projectTask" value="Project" checked="checked" type="radio">
+                  Project
+                </label>
+                <label class="radio" for="personalTask">
+                  <input name="taskType" id="personalTask" value="Personal" type="radio">
+                  Personal
+                </label>
+              </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="control-group">
+              <label class="control-label" for="taskProject">Select a Project</label>
+              <div class="controls">
+                <select id="taskProject" name="taskProject" class="input-medium select-group">
+                  <option class="taskProjectQualifier" selected>(Choose your Project)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="control-group">
+              <label class="control-label" for="taskAssignee">Select an Assignee</label>
+              <div class="controls">
+                <select id="taskAssignee" name="taskAssignee" class="input-medium select-group">
+                  <option selected class="taskAssigneeQualifier">(Choose an Assignee)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Multiple Checkboxes -->
+            <div class="control-group">
+              <label class="control-label" for="taskTrigger">You want to start now?</label>
+              <div class="controls">
+                <label class="checkbox" for="taskTrigger">
+                  <input id="taskTrigger" name="taskTrigger" value="Start Immediatelly" type="checkbox">
+                  Start Immediatelly
+                </label>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <div class="control-group">
+              <label class="control-label" for="addTask"></label>
+              <div class="controls">
+                <button id="addTask" name="addTask" class="btn btn-primary" type="submit">Add</button>
+              </div>
+            </div>
+
+          </fieldset>
         </form>
       </div>
     </div>
+
+    <div id="taskListTab">
+    </div>
+
   </div>
+
+</div>
+
 </div>
