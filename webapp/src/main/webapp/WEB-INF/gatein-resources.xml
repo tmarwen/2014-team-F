@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2003-2011 eXo Platform SAS.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<gatein-resources
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.gatein.org/xml/ns/gatein_resources_1_3 http://www.gatein.org/xml/ns/gatein_resources_1_3"
+    xmlns="http://www.gatein.org/xml/ns/gatein_resources_1_3">
+
+  <portal-skin>
+    <skin-name>Default</skin-name>
+    <skin-module>TaskManagement</skin-module>
+    <css-path>/skin/Stylesheet.css</css-path>
+    <css-priority>40</css-priority>
+  </portal-skin>
+
+  <portlet>
+    <name>TaskManagementApplication</name>
+    <module>
+      <depends>
+        <module>TaskManager</module>
+      </depends>
+    </module>
+  </portlet>
+
+  <module>
+    <name>jquery-1.11.1</name>
+    <script>
+      <adapter>
+        (function() {
+        <include>/javascript/jquery/jquery-1.11.1.js</include>
+        return jQuery.noConflict(true);
+        })();
+      </adapter>
+    </script>
+  </module>
+
+  <module>
+    <name>bootstrap-3.2.0</name>
+    <script>
+      <path>/javascript/bootstrap/bootstrap.js</path>
+    </script>
+    <depends>
+      <module>jquery-1.11.1</module>
+      <as>jQuery</as>
+    </depends>
+  </module>
+
+  <module>
+    <name>TaskManagementTimePicker</name>
+    <script>
+      <path>/javascript/jquery/timepicker/jquery.timepicker.js</path>
+    </script>
+    <depends>
+      <module>jquery-1.11.1</module>
+      <as>jQuery</as>
+    </depends>
+  </module>
+
+  <module>
+    <name>jQueryUI</name>
+    <script>
+      <path>/javascript/jquery/ui/jquery-ui.js</path>
+    </script>
+    <depends>
+      <module>jquery-1.11.1</module>
+      <as>jQuery</as>
+    </depends>
+  </module>
+
+  <module>
+    <name>TaskManager</name>
+    <script>
+      <path>/javascript/task-management/task-manager.js</path>
+    </script>
+    <depends>
+      <module>jquery-1.11.1</module>
+      <as>jQuery</as>
+    </depends>
+    <depends>
+      <module>jQueryUI</module>
+    </depends>
+    <depends>
+      <module>TaskManagementTimePicker</module>
+    </depends>
+    <depends>
+      <module>socialPlugin</module>
+    </depends>
+    <depends>
+      <module>bootstrap-3.2.0</module>
+      <as>customBts</as>
+    </depends>
+  </module>
+
+</gatein-resources>
