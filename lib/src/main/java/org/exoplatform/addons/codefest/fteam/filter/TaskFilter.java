@@ -20,12 +20,14 @@ public class TaskFilter
   public TaskFilter(TaskStatus status)
   {
     statuses = new ArrayList<TaskStatus>();
+    types = new ArrayList<TaskType>();
     statuses.add(status);
   }
 
   public TaskFilter(TaskType type)
   {
     types = new ArrayList<TaskType>();
+    statuses = new ArrayList<TaskStatus>();
     types.add(type);
   }
 

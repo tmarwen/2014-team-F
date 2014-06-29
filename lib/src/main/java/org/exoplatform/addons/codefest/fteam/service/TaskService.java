@@ -12,6 +12,7 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by eXo Platform MEA on 26/06/14.
@@ -31,5 +32,12 @@ public interface TaskService
 
   public List<TaskBean> getAllTasks();
 
-  java.util.Map<String, List<TaskBean>> listByFilter(TaskFilter filter);
+  public Map<String, List<TaskBean>> listByFilter(TaskFilter filter);
+
+  public List<TaskBean> getTasksByStatus(String status);
+
+  public List<TaskBean> getTasksByType(String type);
+
+  public List<TaskBean> getProjectTasks(String projectName);
+
 }

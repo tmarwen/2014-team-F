@@ -21,6 +21,7 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.RuntimeDelegate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,36 +63,43 @@ public class TaskRestService implements ResourceContainer
   }
 
   @GET
-  @Path("/list/byStatus")
-  public Response listTasksByStatus(@QueryParam("status") String status) throws Exception
+  @Path("/list/byStatus/{status}/{userName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response listTasksByStatus(@PathParam("status") String status,
+                                    @PathParam("userName") String userName) throws Exception
   {
-    TaskFilter filter = new TaskFilter(TaskStatus.valueOf(status.toUpperCase()));
-    List<TaskBean> tasks = taskService.listByFilter(filter).get(status.toUpperCase());
+    List<TaskBean> tasks = new ArrayList<TaskBean>();
+    for (TaskBean task : taskService.getTasksByStatus(status))
+    {
+      if (task.getOwner().equals(userName) && task.getType().equals(TaskType.PERSONAL))
+        tasks.add(task);
+    }
     return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
   }
 
   @GET
-  @Path("/list/byType")
-  public Response listTasksByType(@QueryParam("type") String type) throws Exception
+  @Path("/list/byType/{type}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response listTasksByType(@PathParam("type") String type) throws Exception
   {
-    TaskFilter filter = new TaskFilter(TaskType.valueOf(type.toUpperCase()));
-    List<TaskBean> tasks = taskService.listByFilter(filter).get(type.toUpperCase());
+    List<TaskBean> tasks = taskService.getTasksByType(type);
     return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
   }
 
   @GET
-  @Path("/list/byProject")
-  public Response listTasksByProject(@QueryParam("project") String project) throws Exception
+  @Path("/list/byProject/{project}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response listTasksByProject(@PathParam("project") String project) throws Exception
   {
-    TaskFilter filter = new TaskFilter(TaskType.PROJECT);
-    List<TaskBean> allProjects = taskService.listByFilter(filter).get(TaskType.PROJECT.name());
-    return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
+    List<TaskBean> allProjects = taskService.getProjectTasks(project);
+    return Response.ok(allProjects, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
   }
 
 
   @GET
   @Path("/list/all")
-  public Response listAllTaks() throws Exception
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response listAllTasks() throws Exception
   {
     List<TaskBean> tasks = taskService.getAllTasks();
     return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
@@ -133,6 +141,7 @@ public class TaskRestService implements ResourceContainer
 
   @GET
   @Path("/update/task/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
   public void updateTask(@PathParam("id") String id,
                          @QueryParam("dueDate") String dueDate,
                          @QueryParam("dueTime") String dueTime,
@@ -162,6 +171,7 @@ public class TaskRestService implements ResourceContainer
 
   @GET
   @Path("/update/task/{id}/status")
+  @Produces(MediaType.APPLICATION_JSON)
   public void updateTask(@PathParam("id") String id,
                          @QueryParam("status") String status) throws Exception
   {

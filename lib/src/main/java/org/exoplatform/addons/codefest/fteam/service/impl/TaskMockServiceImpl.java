@@ -67,4 +67,22 @@ public class TaskMockServiceImpl implements TaskService
   {
     return null;
   }
+
+  @Override
+  public List<TaskBean> getTasksByStatus(String status)
+  {
+    return null;
+  }
+
+  @Override
+  public List<TaskBean> getTasksByType(String type)
+  {
+    return null;
+  }
+
+  @Override
+  public List<TaskBean> getProjectTasks(String projectName)
+  {
+    return null;
+  }
 }

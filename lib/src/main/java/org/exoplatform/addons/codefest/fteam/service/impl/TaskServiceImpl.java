@@ -12,10 +12,7 @@ import org.exoplatform.services.log.Log;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by marwen on 6/26/14.
@@ -67,7 +64,7 @@ public class TaskServiceImpl implements TaskService
     {
       Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
       taskNode = taskManagementRootNode.getNode(id);
-      TaskManagementUtils.nodeToBean(taskNode, task);
+      TaskManagementUtils.beanToNode(task, taskNode);
       taskManagementRootNode.save();
       taskManagementRootNode.getSession().logout();
     } catch (RepositoryException e)
@@ -139,7 +136,7 @@ public class TaskServiceImpl implements TaskService
           if (task.getStatus().equals(status))
             tasksFilter.add(task);
         }
-        tasks.put(status.name(), tasksFilter);
+        tasks.put(status.name(), tasksFilter.isEmpty() ? Collections.EMPTY_LIST: tasksFilter);
       }
     }
 
@@ -153,10 +150,35 @@ public class TaskServiceImpl implements TaskService
           if (task.getType().equals(type))
             tasksFilter.add(task);
         }
-        tasks.put(type.name(), tasksFilter);
+        tasks.put(type.name(), tasksFilter.isEmpty() ? Collections.EMPTY_LIST: tasksFilter);
       }
     }
 
     return tasks;
+  }
+
+  public List<TaskBean> getTasksByStatus(String status)
+  {
+    TaskFilter filter = new TaskFilter(TaskStatus.valueOf(status.toUpperCase()));
+    return listByFilter(filter).get(status.toUpperCase());
+  }
+
+  public List<TaskBean> getTasksByType(String type)
+  {
+    TaskFilter filter = new TaskFilter(TaskType.valueOf(type.toUpperCase()));
+    return listByFilter(filter).get(type.toUpperCase());
+  }
+
+  public List<TaskBean> getProjectTasks(String projectName)
+  {
+    List<TaskBean> projectTasks = new ArrayList<TaskBean>();
+    TaskFilter projectFilter = new TaskFilter(TaskType.PROJECT);
+    List<TaskBean> allProjectsTasks = listByFilter(projectFilter).get(TaskType.PROJECT.name());
+    for (TaskBean task : allProjectsTasks)
+    {
+      if(task.getOwner().equals(projectName))
+        projectTasks.add(task);
+    }
+    return projectTasks;
   }
 }
