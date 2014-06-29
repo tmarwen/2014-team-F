@@ -1,9 +1,12 @@
 package org.exoplatform.addons.codefest.fteam.service.rest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.exoplatform.addons.codefest.fteam.filter.TaskFilter;
 import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 import org.exoplatform.addons.codefest.fteam.model.TaskStatus;
 import org.exoplatform.addons.codefest.fteam.model.TaskType;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
+import org.exoplatform.addons.codefest.fteam.service.mapper.TaskBeanMapper;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.rest.impl.RuntimeDelegateImpl;
@@ -18,8 +21,6 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.RuntimeDelegate;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,128 +43,130 @@ public class TaskRestService implements ResourceContainer
     cacheControl.setNoStore(true);
   }
 
-  private TaskService _taskService;
+  private TaskService taskService;
 
   public TaskRestService(TaskService taskService)
   {
-    _taskService = taskService;
+    this.taskService = taskService;
   }
 
   @GET
-  @Path("/getTask/{taskId}")
+  @Path("/get/task/{taskId}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getTaskOfProject(@PathParam("taskId") String taskId)
+  public Response getTask(@PathParam("taskId") String taskId)
       throws Exception
   {
 
-    TaskBean tasks = _taskService.getTask(taskId);
+    TaskBean tasks = taskService.getTask(taskId);
     return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
   }
 
   @GET
-  @Path("/getAllTask")
-  public Response getAllProject() throws Exception
+  @Path("/list/byStatus")
+  public Response listTasksByStatus(@QueryParam("status") String status) throws Exception
   {
-    List<TaskBean> tasks = _taskService.getAllTasks();
+    TaskFilter filter = new TaskFilter(TaskStatus.valueOf(status.toUpperCase()));
+    List<TaskBean> tasks = taskService.listByFilter(filter).get(status.toUpperCase());
+    return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
+  }
+
+  @GET
+  @Path("/list/byType")
+  public Response listTasksByType(@QueryParam("type") String type) throws Exception
+  {
+    TaskFilter filter = new TaskFilter(TaskType.valueOf(type.toUpperCase()));
+    List<TaskBean> tasks = taskService.listByFilter(filter).get(type.toUpperCase());
+    return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
+  }
+
+  @GET
+  @Path("/list/byProject")
+  public Response listTasksByProject(@QueryParam("project") String project) throws Exception
+  {
+    TaskFilter filter = new TaskFilter(TaskType.PROJECT);
+    List<TaskBean> allProjects = taskService.listByFilter(filter).get(TaskType.PROJECT.name());
     return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
   }
 
 
   @GET
-  @Path("/createTask")
-  public void createTask(@QueryParam("taskId") long taskId,
-                         @QueryParam("owner") String owner,
+  @Path("/list/all")
+  public Response listAllTaks() throws Exception
+  {
+    List<TaskBean> tasks = taskService.getAllTasks();
+    return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
+  }
+
+  @GET
+  @Path("/add/task")
+  public void createTask(@QueryParam("taskId") String id,
                          @QueryParam("dueDate") String dueDate,
+                         @QueryParam("dueTime") String dueTime,
                          @QueryParam("startDate") String startDate,
+                         @QueryParam("startTime") String startTime,
                          @QueryParam("type") String type,
-                         @QueryParam("status") String status,
                          @QueryParam("description") String description,
-                         @QueryParam("assignee") String assignee) throws Exception
+                         @QueryParam("assignee") String assignee,
+                         @QueryParam("project") String project,
+                         @QueryParam("trigger") String trigger) throws Exception
   {
 
-    TaskBean task = new TaskBean();
+    if (!StringUtils.isEmpty(trigger) && trigger.equalsIgnoreCase("YES"))
+      trigger = TaskBeanMapper.TASK_TRIGGER;
 
-    task.setOwner(owner);
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-    Date _duedate = formatter.parse(dueDate);
-    Date _startdate = formatter.parse(startDate);
-    task.setDueDate(_duedate);
-    task.setStartDate(_startdate);
-    task.setDescription(description);
-    task.setAssignee(assignee);
-    if (status.equals("todo"))
-    {
-      task.setStatus(TaskStatus.TODO);
-    }
-    if (status.equals("INPROGRESS"))
-    {
-      task.setStatus(TaskStatus.INPROGRESS);
-    }
-    if (status.equals("DONE"))
-    {
-      task.setStatus(TaskStatus.DONE);
-    }
+    TaskBean task = TaskBeanMapper.mapStringifiedTask(
+        id,
+        description,
+        dueDate,
+        dueTime,
+        startDate,
+        startTime,
+        type,
+        assignee,
+        project,
+        trigger
+    );
 
-    if (type.equals("PERSONAL"))
-    {
-      task.setType(TaskType.PERSONAL);
-    }
-
-    if (type.equals("PROJECT"))
-    {
-      task.setType(TaskType.PROJECT);
-    }
-
-    _taskService.addTask(task);
+    taskService.addTask(task);
 
   }
 
   @GET
-  @Path("/updatetask")
-  public void updateTask(@QueryParam("taskId") long taskId,
-                         @QueryParam("owner") String owner,
+  @Path("/update/task/{id}")
+  public void updateTask(@PathParam("id") String id,
                          @QueryParam("dueDate") String dueDate,
+                         @QueryParam("dueTime") String dueTime,
                          @QueryParam("startDate") String startDate,
+                         @QueryParam("startTime") String startTime,
                          @QueryParam("type") String type,
-                         @QueryParam("status") String status,
                          @QueryParam("description") String description,
-                         @QueryParam("assignee") String assignee) throws Exception
+                         @QueryParam("assignee") String assignee,
+                         @QueryParam("project") String project,
+                         @QueryParam("trigger") String trigger) throws Exception
   {
 
-    TaskBean task = new TaskBean();
+    TaskBean task = TaskBeanMapper.mapStringifiedTask(
+        id,
+        description,
+        dueDate,
+        dueTime,
+        startDate,
+        startTime,
+        type,
+        assignee,
+        project,
+        trigger
+    );
+    taskService.updateTask(id, task);
+  }
 
-    task.setOwner(owner);
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-    Date _duedate = formatter.parse(dueDate);
-    Date _startdate = formatter.parse(startDate);
-    task.setDueDate(_duedate);
-    task.setStartDate(_startdate);
-    task.setDescription(description);
-    task.setAssignee(assignee);
-    if (status.equals("todo"))
-    {
-      task.setStatus(TaskStatus.TODO);
-    }
-    if (status.equals("INPROGRESS"))
-    {
-      task.setStatus(TaskStatus.INPROGRESS);
-    }
-    if (status.equals("DONE"))
-    {
-      task.setStatus(TaskStatus.DONE);
-    }
-
-    if (type.equals("PERSONAL"))
-    {
-      task.setType(TaskType.PERSONAL);
-    }
-
-    if (type.equals("PROJECT"))
-    {
-      task.setType(TaskType.PROJECT);
-    }
-
-    _taskService.addTask(task);
-
+  @GET
+  @Path("/update/task/{id}/status")
+  public void updateTask(@PathParam("id") String id,
+                         @QueryParam("status") String status) throws Exception
+  {
+    TaskBean task = taskService.getTask(id);
+    task.setStatus(TaskStatus.valueOf(status));
+    taskService.updateTask(id, task);
   }
 }

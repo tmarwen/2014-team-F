@@ -25,7 +25,7 @@ public interface TaskService
 
   public void addTask(TaskBean task);
 
-  public void updateTask(TaskBean task);
+  public void updateTask(String id, TaskBean task);
 
   public void removeTask(String id);
 

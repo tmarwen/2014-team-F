@@ -26,7 +26,7 @@
   <!-- Task Management Related Services -->
   <component>
     <key>org.exoplatform.addons.codefest.fteam.service.TaskService</key>
-    <type>org.exoplatform.addons.codefest.fteam.service.impl.TaskMockServiceImpl</type>
+    <type>org.exoplatform.addons.codefest.fteam.service.impl.TaskServiceImpl</type>
   </component>
 
   <component>

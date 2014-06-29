@@ -23,22 +23,22 @@ public class TaskBean
 
   public TaskBean() {}
 
-  public TaskBean(String _id,
-                  String _owner,
-                  Date due_date,
-                  Date start_date,
+  public TaskBean(String id,
+                  String owner,
+                  Date dueDate,
+                  Date startDate,
                   TaskType type,
                   TaskStatus status,
-                  String _description,
+                  String description,
                   String assignee)
   {
-    this.id = _id;
-    this.owner = _owner;
-    this.dueDate = due_date;
-    this.startDate = start_date;
+    this.id = id;
+    this.owner = owner;
+    this.dueDate = dueDate;
+    this.startDate = startDate;
     this.type = type;
     this.status = status;
-    this.description = _description;
+    this.description = description;
     this.assignee = assignee;
   }
 

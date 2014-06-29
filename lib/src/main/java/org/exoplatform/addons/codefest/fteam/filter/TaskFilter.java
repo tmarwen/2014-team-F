@@ -17,19 +17,19 @@ public class TaskFilter
   private List<TaskType> types;
   private List<TaskStatus> statuses;
 
-  TaskFilter(TaskStatus status)
+  public TaskFilter(TaskStatus status)
   {
     statuses = new ArrayList<TaskStatus>();
     statuses.add(status);
   }
 
-  TaskFilter(TaskType type)
+  public TaskFilter(TaskType type)
   {
     types = new ArrayList<TaskType>();
     types.add(type);
   }
 
-  TaskFilter(List<TaskType> types, List<TaskStatus> statuses)
+  public TaskFilter(List<TaskType> types, List<TaskStatus> statuses)
   {
     this.types = types;
     this.statuses = statuses;

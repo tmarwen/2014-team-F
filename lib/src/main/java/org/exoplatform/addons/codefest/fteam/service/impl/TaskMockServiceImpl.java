@@ -39,11 +39,13 @@ public class TaskMockServiceImpl implements TaskService
   @Override
   public void addTask(TaskBean task)
   {
-
+    int taskId = mockTasks.size();
+    task.setId(String.valueOf(taskId));
+    mockTasks.add(task);
   }
 
   @Override
-  public void updateTask(TaskBean task)
+  public void updateTask(String id, TaskBean task)
   {
 
   }

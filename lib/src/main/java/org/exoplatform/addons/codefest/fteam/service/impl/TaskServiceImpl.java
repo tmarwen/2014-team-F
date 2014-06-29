@@ -24,21 +24,22 @@ public class TaskServiceImpl implements TaskService
 {
   private static final Log LOG = ExoLogger.getLogger("org.exoplatform.addons.codefest.fteam.service.impl.TaskServiceImpl");
 
-  private Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
-
   @Override
   public TaskBean getTask(String taskId)
   {
-    Node task = null;
+    Node task;
+    TaskBean taskBean = new TaskBean();
     try
     {
+      Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
       task = taskManagementRootNode.getNode(taskId);
+      taskBean = TaskManagementUtils.nodeToBean(task, taskBean);
+      taskManagementRootNode.getSession().logout();
     } catch (RepositoryException e)
     {
       LOG.error("Error while retrieving task: ", e);
     }
-    TaskBean taskBean = new TaskBean();
-    return TaskManagementUtils.nodeToBean(task, taskBean);
+    return taskBean;
   }
 
   @Override
@@ -47,9 +48,11 @@ public class TaskServiceImpl implements TaskService
     Node taskNode;
     try
     {
+      Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
       taskNode = taskManagementRootNode.addNode(task.getId(), TaskManagementUtils.EXO_TASK);
       TaskManagementUtils.beanToNode(task, taskNode);
       taskManagementRootNode.save();
+      taskManagementRootNode.getSession().logout();
     } catch (RepositoryException e)
     {
       LOG.error("Error while adding task: ", e);
@@ -57,14 +60,16 @@ public class TaskServiceImpl implements TaskService
   }
 
   @Override
-  public void updateTask(TaskBean task)
+  public void updateTask(String id, TaskBean task)
   {
     Node taskNode;
     try
     {
-      taskNode = taskManagementRootNode.getNode(task.getId());
+      Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
+      taskNode = taskManagementRootNode.getNode(id);
       TaskManagementUtils.nodeToBean(taskNode, task);
       taskManagementRootNode.save();
+      taskManagementRootNode.getSession().logout();
     } catch (RepositoryException e)
     {
       LOG.error("Error while updating task: ", e);
@@ -76,8 +81,10 @@ public class TaskServiceImpl implements TaskService
   {
     try
     {
+      Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
       taskManagementRootNode.getNode(taskId).remove();
       taskManagementRootNode.save();
+      taskManagementRootNode.getSession().logout();
     } catch (RepositoryException e)
     {
       LOG.error("Error while removing task: ", e);
@@ -88,6 +95,7 @@ public class TaskServiceImpl implements TaskService
   public List<TaskBean> getAllTasks()
   {
     List<TaskBean> tasks = new ArrayList<TaskBean>();
+    Node taskManagementRootNode = TaskManagementUtils.getTaskManagementRootNode();
     try
     {
       for (NodeIterator nodeIterator = taskManagementRootNode.getNodes(); nodeIterator.hasNext();)
@@ -98,6 +106,16 @@ public class TaskServiceImpl implements TaskService
     } catch (RepositoryException e)
     {
       LOG.error("Error while loading all tasks: ", e);
+    }
+    finally
+    {
+      try
+      {
+        taskManagementRootNode.getSession().logout();
+      } catch (RepositoryException e)
+      {
+        LOG.error("Error while closing session: ", e);
+      }
     }
     return tasks;
   }

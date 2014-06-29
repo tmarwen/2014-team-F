@@ -13,7 +13,7 @@
                           protected="true" multiple="false">
         <valueConstraints/>
       </propertyDefinition>
-      <propertyDefinition name="exo:taskId" requiredType="Long" autoCreated="false" mandatory="true" onParentVersion="COPY"
+      <propertyDefinition name="exo:taskId" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
                           protected="false" multiple="false">
         <valueConstraints/>
       </propertyDefinition>

@@ -5,9 +5,9 @@ package org.exoplatform.addons.codefest.fteam.model;
  */
 public enum TaskStatus
 {
-  TODO("todo"),
-  DONE("done"),
-  INPROGRESS("inprogress");
+  TODO("TODO"),
+  DONE("DONE"),
+  INPROGRESS("INPROGRESS");
 
   private final String status;
 
