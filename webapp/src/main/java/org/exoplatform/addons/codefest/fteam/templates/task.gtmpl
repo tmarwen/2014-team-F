@@ -1,34 +1,62 @@
 #{title value=task.id/}
 #{param name=task/}
 
-<h1>View Task</h1>
+<h3>View Task</h3>
 
-<p>
-  <strong>ID:</strong> ${task.id}
-</p>
-<p>
-  <strong>Owner:</strong> ${task.owner}
-</p>
-<p>
-  <strong>Due Date:</strong> ${task.dueDate}
-</p>
-<p>
-  <strong>Start Date:</strong> ${task.startDate}
-</p>
-<p>
-  <strong>Type:</strong> ${task.type}
-</p>
-<p>
-  <strong>Status:</strong> ${task.status}      <!-- interface will be based on this attribute -->
-</p>
-<p>
-  <strong>Description:</strong> ${task.description}
-</p>
-<p>
-  <strong>Assignee:</strong> ${task.assignee}
-</p>
+<div id="taskViewContainer">
+  <div id="taskProperties">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>ID:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.id}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Owner:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.owner}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Assignee:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.assignee}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Start Time:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.startDate}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Due Time:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.dueDate}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Status:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.status}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Description:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.description}" readonly>
+        </div>
+      </div>
 
-<p class="buttons">
-  <a href="@{index()}">Add another Task</a>
-  <a href="@{index()}">Show Task Lists</a>
-</p>
+    </form>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div id="taskRedirections" class="pull-right">
+    <div>
+      <p class="text-primary btn-link"><a href="@{ index()}">Add another Task</a></p>
+    </div>
+  </div>
+</div>

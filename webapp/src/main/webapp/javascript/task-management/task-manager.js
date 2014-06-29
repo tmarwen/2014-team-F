@@ -21,16 +21,21 @@
   var userSpaceRESTUrl = "/" + TaskManagerUtil.rest + TaskManagerUtil.context + "/social/spaces/mySpaces/show.json";
   var userSpaces = [];
 
-  $("#taskOperationTabs").tabs();
+//  $("#taskOperationTabs").tabs();
+
+  $( "#taskOperationTabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+  $( "#taskOperationTabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 
   // initialize input task dates
   $('#startEndTaskDateCouple .time').timepicker({
+    'minTime': '9:00',
+    'maxTime': '18:00',
     'showDuration': true,
-    'timeFormat': 'g:ia'
+    'timeFormat': 'H:i'
   });
 
   $('#startEndTaskDateCouple .date').datepicker({
-    'format': 'yyyy-m-d',
+    'format': 'm-d-yyyy',
     'autoclose': true
   });
 
@@ -84,13 +89,13 @@
 
   function clearTaskProjectList() {
     $("select#taskProject option")
-      .not(".taskProjectQualifier")
+      .not(".taskProjectPlaceholder")
       .remove();
   }
 
   function clearTaskAssigneeList() { // TODO
     $("select#taskAssignee option")
-      .not(".taskAssigneeQualifier")
+      .not(".taskAssigneePlaceholder")
       .remove();
   }
 

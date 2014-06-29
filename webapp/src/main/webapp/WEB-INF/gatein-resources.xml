@@ -113,10 +113,10 @@
     <depends>
       <module>BootstrapDatePicker</module>
     </depends>
-    <depends>
+    <!--depends>
       <module>socialPlugin</module>
     </depends>
-    <!--depends>
+    <depends>
       <module>bootstrap-3.2.0</module>
       <as>customBts</as>
     </depends-->

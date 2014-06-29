@@ -16,11 +16,7 @@
 
 package org.exoplatform.addons.codefest.fteam;
 
-import juzu.Action;
-import juzu.Path;
-import juzu.Response;
-import juzu.Route;
-import juzu.View;
+import juzu.*;
 import org.exoplatform.addons.codefest.fteam.model.TaskBean;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
 import org.exoplatform.addons.codefest.fteam.service.mapper.TaskBeanMapper;
@@ -59,15 +55,27 @@ public class Controller {
   public Response.View addTask(String taskId,
                                String taskDescription,
                                String taskDueDate,
+                               String taskDueTime,
                                String taskStartDate,
+                               String taskStartTime,
                                String taskType,
                                String taskAssignee,
                                String taskProject,
                                String taskTrigger)
   {
     TaskService taskService = TaskManagementUtils.getService(TaskService.class);
-    TaskBean taskBean = TaskBeanMapper.mapStringifiedTask(taskId, taskDueDate, taskStartDate, taskType, taskDescription, taskAssignee, taskProject, taskTrigger);
+    TaskBean taskBean = TaskBeanMapper.mapStringifiedTask(taskId,
+        taskDescription,
+        taskDueDate,
+        taskDueTime,
+        taskStartDate,
+        taskStartTime,
+        taskType,
+        taskAssignee,
+        taskProject,
+        taskTrigger);
     taskService.addTask(taskBean);
     return Controller_.task(taskBean.getId());
+//    return Controller_.task(String.valueOf(0));
   }
 }
