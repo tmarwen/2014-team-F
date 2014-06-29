@@ -6,8 +6,12 @@
   <div id="taskOperationTabs">
 
     <ul>
-      <li><a href="#addTaskTab">Add a Task</a><img class="ui-icon ui-icon-circle-plus"/></li>
-      <li><a href="#taskListTab">Visualize Tasks</a><img class="ui-icon ui-icon-search"/></li>
+      <li><a href="#addTaskTab">Add a Task</a></li>
+      <li><a href="#todoTaskTab">To Do</a></li>
+      <li><a href="#inProgressTaskTab">In Progress</a></li>
+      <li><a href="#doneTaskTab">Done</a></li>
+      <li><a href="#allTaskTab">All</a></li>
+      <li><a href="#perProjectTaskTab">Per Project</a></li>
     </ul>
 
     <div id="addTaskTab">
@@ -92,7 +96,7 @@
             <div class="control-group">
               <label class="control-label" for="taskProject">Select a Project</label>
               <div class="controls">
-                <select id="taskProject" name="taskProject" class="input-lg select-group form-control">
+                <select id="taskProject" name="taskProject" class="input-lg select-group form-control taskProjectList">
                   <option class="taskProjectPlaceholder" selected>(Choose your Project)</option>
                 </select>
               </div>
@@ -132,7 +136,35 @@
       </div>
     </div>
 
-    <div id="taskListTab">
+    <div id="todoTaskTab" class="tasksListContainer">
+    </div>
+
+    <div id="inProgressTaskTab" class="tasksListContainer">
+
+    </div>
+
+    <div id="doneTaskTab" class="tasksListContainer">
+
+    </div>
+
+    <div id="allTaskTab" class="tasksListContainer">
+      <div id="list"></div>
+      <div id="chart"></div>
+    </div>
+
+    <div id="perProjectTaskTab">
+      <!-- Select Basic -->
+      <div class="control-group">
+        <label class="control-label" for="taskProject">Select a Project</label>
+        <div class="controls">
+          <select id="perProjectTaskProject" name="perProjectTaskProject" class="taskProjectList select-group form-control">
+            <option class="taskProjectPlaceholder" selected>(Choose your Project)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="projectTasksContainer" class="tasksListContainer">
+        </div>
     </div>
 
   </div>

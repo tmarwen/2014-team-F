@@ -23,3 +23,21 @@
 #taskViewContainer #taskRedirections {
     margin-right: 17px;
 }
+
+.tasksListContainer div.taskItemContainer textarea {
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.tasksListContainer div.taskItemProperty {
+    padding: 10px;
+    vertical-align: middle;
+    width: 450px;
+}
+
+.tasksListContainer div.taskItemProperty input {
+    padding: 5px;
+    float: right;
+}
+
+

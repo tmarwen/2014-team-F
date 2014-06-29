@@ -17,14 +17,23 @@
     restTaskManagerURI:  'task-rest-manager'
   };
 
-  var restTaskManagerURL = "/" + TaskManagerUtil.rest + "/" + TaskManagerUtil.restTaskManagerURI;
-  var userSpaceRESTUrl = "/" + TaskManagerUtil.rest + TaskManagerUtil.context + "/social/spaces/mySpaces/show.json";
+  var restTaskManagerURL = "/" + TaskManagerUtil.rest + "/" + TaskManagerUtil.restTaskManagerURI,
+    userSpaceRESTUrl = "/" + TaskManagerUtil.rest + TaskManagerUtil.context + "/social/spaces/mySpaces/show.json",
+    todoTasksRESTUrl = restTaskManagerURL + "/list/byStatus/todo/" + TaskManagerUtil.userName,
+    inProgressTasksRESTUrl = restTaskManagerURL + "/list/byStatus/inprogress/" + TaskManagerUtil.userName,
+    doneTasksRESTUrl = restTaskManagerURL + "/list/byStatus/done/" + TaskManagerUtil.userName,
+    personalTasksRESTUrl = restTaskManagerURL + "/list/byType/personal/" + TaskManagerUtil.userName,
+    allProjectTasksRESTUrl = restTaskManagerURL + "/list/byType/project",
+    projectTasksRESTUrl = restTaskManagerURL + "/list/byProject/{project}",
+    updateTaskRESTUrl = restTaskManagerURL + "/update/task/{id}/status?status={status}",
+    taskItemHeaderResolver=  "taskHeader-",
+    taskItemContentResolver=  "taskContent-";
   var userSpaces = [];
-
-//  $("#taskOperationTabs").tabs();
 
   $( "#taskOperationTabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
   $( "#taskOperationTabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+
+  $("#taskListTab").tabs();
 
   // initialize input task dates
   $('#startEndTaskDateCouple .time').timepicker({
@@ -55,6 +64,7 @@
   $.getJSON(userSpaceRESTUrl, function(data){
     var mySpaces = data.spaces;
     var $taskProjectSelectList = $('select#taskProject');
+    var $perProjectProjectList = $('#perProjectTaskTab select#perProjectTaskProject');
     clearTaskProjectList();
     $.each(mySpaces, function( key, val ) {
       var spaceName = val.name;
@@ -66,14 +76,119 @@
           groupId: val.groupId,
           url: val.url
         })
-        .appendTo($taskProjectSelectList);
+        .appendTo($taskProjectSelectList)
+        .appendTo($perProjectProjectList);
     });
+  });
+
+  pullTodoTasks();
+  pullInProgressTasks();
+  pullDoneTasks();
+
+  function pullTodoTasks() {
+    var $todoTasksContainer = $('#todoTaskTab');
+    $todoTasksContainer.empty();
+    $.getJSON(todoTasksRESTUrl, function (todoTasks) {
+      $.each(todoTasks, function (key, val) {
+        var $taskDiv = appendTaskItemToContainer($todoTasksContainer, val);
+        var $startTaskButton = $("<button></button>");
+        $startTaskButton.attr({
+          id: "startTask" + val.id
+        })
+          .data("taskId", val.id)
+          .addClass("btn btn-danger startTaskButton pull-right")
+          .html("Start this Task!")
+          .appendTo($taskDiv);
+      });
+      $todoTasksContainer.accordion({
+        collapsible: true,
+        heightStyle: "content"
+      });
+    });
+  }
+
+  function pullInProgressTasks() {
+    var $inProgressTasksContainer = $('#inProgressTaskTab');
+    $inProgressTasksContainer.empty();
+    $.getJSON(inProgressTasksRESTUrl, function (inProgressTasks) {
+      $.each(inProgressTasks, function (key, val) {
+        var $taskDiv = appendTaskItemToContainer($inProgressTasksContainer, val);
+        var $finishTaskButton = $("<button></button>");
+        $finishTaskButton.attr({
+          id: "finishTask" + val.id
+        })
+          .data("taskId", val.id)
+          .addClass("btn btn-warning finishTaskButton pull-right")
+          .html("Are You Done?")
+          .appendTo($taskDiv);
+      });
+      $inProgressTasksContainer.accordion({
+        collapsible: true,
+        heightStyle: "content"
+      });
+    });
+  }
+
+  function pullDoneTasks() {
+    var $doneTasksContainer = $('#doneTaskTab');
+    $doneTasksContainer.empty();
+    $.getJSON(doneTasksRESTUrl, function (doneTasks) {
+      $.each(doneTasks, function (key, val) {
+        appendTaskItemToContainer($doneTasksContainer, val);
+      });
+      $doneTasksContainer.accordion({
+        collapsible: true,
+        heightStyle: "content"
+      });
+    });
+  }
+
+  $('#todoTaskTab').on('click', 'button.startTaskButton', function(){
+    var taskId = $(this).data('taskId');
+    var updateURL = updateTaskRESTUrl
+      .replace('{status}', 'INPROGRESS')
+      .replace('{id}', taskId);
+    $.get(updateURL)
+      .done(function(){
+      $('#todoTaskTab')
+        .find("h3#" + taskItemHeaderResolver + taskId.replace( /\s/g, ""))
+        .fadeOut(300, function() {
+          $(this).remove();
+          $('#todoTaskTab')
+            .find('div#' + taskItemContentResolver + taskId.replace( /\s/g, ""))
+            .fadeOut(200, function() {
+              $(this).remove();
+            });
+          pullInProgressTasks();
+        });
+    });
+  });
+
+  $('#inProgressTaskTab').on('click', 'button.finishTaskButton', function(){
+    var taskId = $(this).data('taskId');
+    var updateURL = updateTaskRESTUrl
+      .replace('{status}', 'DONE')
+      .replace('{id}', taskId);
+    $.get(updateURL)
+      .done(function(){
+        $('#inProgressTaskTab')
+        .find("h3#" + taskItemHeaderResolver + taskId.replace( /\s/g, ""))
+        .fadeOut(300, function() {
+          $(this).remove();
+          $('#inProgressTaskTab')
+            .find('div#' + taskItemContentResolver + taskId.replace( /\s/g, ""))
+            .fadeOut(200, function() {
+              $(this).remove();
+            });
+            pullDoneTasks();
+        });
+      });
   });
 
   $("#addTaskForm").on('change', 'select#taskProject', function() {
     clearTaskAssigneeList();
     var $selectedSpace = $(this).find(':selected');
-    var spaceUrl = $selectedSpace.data('spaceUrl');
+    var spaceUrl = $selectedSpace.data('url');
     var $taskAssigneeSelectList = $('select#taskAssignee');
     $.getJSON(buildSpaceMemberUrl(spaceUrl), function(data){
       var spaceMembers = data.names;
@@ -86,6 +201,111 @@
       });
     });
   });
+
+  $("#perProjectTaskTab").on('change', 'select#perProjectTaskProject', function() {
+    var $selectedSpace = $(this).find(':selected');
+    var spaceUrl = $selectedSpace.data('url');
+    $.getJSON(projectTasksRESTUrl.replace('{project}', spaceUrl), function(projectTasks){
+      var $perProjectTasksContainer = $('#projectTasksContainer');
+      appendTaskItemToContainer($perProjectTasksContainer, projectTasks);
+      $perProjectTasksContainer.accordion({
+        collapsible: true,
+        heightStyle: "content"
+      });
+    });
+  });
+
+  function appendTaskItemToContainer(container, task) {
+    var $taskId = $("<h3></h3>");
+    $taskId.html(task.id)
+      .attr("id", taskItemHeaderResolver + task.id.replace( /\s/g, ""))
+      .appendTo(container);
+    var $taskDiv = $("<div></div>");
+    $taskDiv
+      .attr("id", taskItemContentResolver + task.id.replace( /\s/g, ""))
+      .addClass("taskItemContainer");
+    var $taskDescription = $("<textarea></textarea>");
+    $taskDescription.val(task.description)
+      .prop({"disabled": true})
+      .appendTo($taskDiv);
+    var $taskOwnerContainer = $("<div></div>");
+    $taskOwnerContainer.addClass("taskItemProperty");
+    var $taskOwnerLabel = $("<label></label>");
+    $taskOwnerLabel
+      .html("Owner: ")
+      .appendTo($taskOwnerContainer);
+    var $taskOwnerInput = $("<input />");
+    $taskOwnerInput
+      .attr({
+        type: "text",
+        placeholder: task.owner,
+        readonly: true
+      })
+      .appendTo($taskOwnerContainer);
+    $taskOwnerContainer.appendTo($taskDiv);
+    var $taskAssigneeContainer = $("<div></div>");
+    $taskAssigneeContainer.addClass("taskItemProperty");
+    var $taskAssigneeLabel = $("<label></label>");
+    $taskAssigneeLabel
+      .html("Assignee: ")
+      .appendTo($taskAssigneeContainer);
+    var $taskAssigneeInput = $("<input />");
+    $taskAssigneeInput
+      .attr({
+        type: "text",
+        placeholder: task.assignee,
+        readonly: true
+      })
+      .appendTo($taskAssigneeContainer);
+    $taskAssigneeContainer.appendTo($taskDiv);
+    var $taskStartDateContainer = $("<div></div>");
+    $taskStartDateContainer.addClass("taskItemProperty");
+    var $taskStartDateLabel = $("<label></label>");
+    $taskStartDateLabel
+      .html("Start Date: ")
+      .appendTo($taskStartDateContainer);
+    var $taskStartDateInput = $("<input />");
+    $taskStartDateInput
+      .attr({
+        type: "text",
+        placeholder: new Date(task.startDate.time),
+        readonly: true
+      })
+      .appendTo($taskStartDateContainer);
+    $taskStartDateContainer.appendTo($taskDiv);
+    var $taskDueDateContainer = $("<div></div>");
+    $taskDueDateContainer.addClass("taskItemProperty");
+    var $taskDueDateLabel = $("<label></label>");
+    $taskDueDateLabel
+      .html("Due Date: ")
+      .appendTo($taskDueDateContainer);
+    var $taskDueDateInput = $("<input />");
+    $taskDueDateInput
+      .attr({
+        type: "text",
+        placeholder: new Date(task.dueDate.time),
+        readonly: true
+      })
+      .appendTo($taskDueDateContainer);
+    $taskDueDateContainer.appendTo($taskDiv);
+    var $taskStatusContainer = $("<div></div>");
+    $taskStatusContainer.addClass("taskItemProperty");
+    var $taskStatusLabel = $("<label></label>");
+    $taskStatusLabel
+      .html("Status: ")
+      .appendTo($taskStatusContainer);
+    var $taskStatusInput = $("<input />");
+    $taskStatusInput
+      .attr({
+        type: "text",
+        placeholder: task.status,
+        readonly: true
+      })
+      .appendTo($taskStatusContainer);
+    $taskStatusContainer.appendTo($taskDiv);
+    $taskDiv.appendTo(container);
+    return $taskDiv;
+  }
 
   function clearTaskProjectList() {
     $("select#taskProject option")
