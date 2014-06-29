@@ -35,3 +35,5 @@ target/
 
 # Misc
 *.swp
+
+*.sh

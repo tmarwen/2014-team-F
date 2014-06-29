@@ -9,5 +9,124 @@
   <artifactId>team-f-addon-webapp</artifactId>
   <packaging>war</packaging>
   <name>Codefest 2014 - Team F Addon - Webapp</name>
+  <description>Codefest 2014 - Team F Addon - A portlet or any webapp</description>
+  <properties>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <juzu.artifacts.version>1.0.0-cr1</juzu.artifacts.version>
+  </properties>
 
+  <dependencies>
+
+    <!-- Application dependencies-->
+    <dependency>
+      <groupId>org.juzu</groupId>
+      <artifactId>juzu-core</artifactId>
+      <version>${juzu.artifacts.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.juzu</groupId>
+      <artifactId>juzu-plugins-servlet</artifactId>
+      <version>${juzu.artifacts.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.juzu</groupId>
+      <artifactId>juzu-plugins-portlet</artifactId>
+      <version>${juzu.artifacts.version}</version>
+    </dependency>
+
+    <!-- Servlet 3.x API -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.portlet</groupId>
+      <artifactId>portlet-api</artifactId>
+      <version>2.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Dependencies for Guice in a Servlet Container -->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+    </dependency>
+
+    <!-- Inter Module Dependncies -->
+    <dependency>
+      <groupId>org.exoplatform.addons.codefest.team_f</groupId>
+      <artifactId>team-f-addon-lib</artifactId>
+      <version>1.0.x-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.1</version>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <path>/</path>
+                <!-- Use a separation classloader to avoid conflicts with SLF4J -->
+                <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <configuration>
+          <path>/</path>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <!-- Activate this profile for using Juzu live mode -->
+  <profiles>
+    <profile>
+      <id>live</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.tomcat.maven</groupId>
+              <artifactId>tomcat7-maven-plugin</artifactId>
+              <configuration>
+                <systemProperties>
+                  <juzu.run_mode>live</juzu.run_mode>
+                </systemProperties>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
 </project>
