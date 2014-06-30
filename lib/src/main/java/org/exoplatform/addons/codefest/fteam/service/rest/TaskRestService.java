@@ -63,6 +63,7 @@ public class TaskRestService implements ResourceContainer
 
   @GET
   @Path("/list/byStatus/{status}/{userName}")
+  @Produces(MediaType.APPLICATION_JSON)
   public Response listTasksByStatus(@Context UriInfo uriInfo,
                                     @PathParam("status") String status,
                                     @PathParam("userName") String userName) throws Exception
@@ -70,7 +71,7 @@ public class TaskRestService implements ResourceContainer
     List<TaskBean> tasks = taskService.getTasksByStatus(status);
     return Response.created(uriInfo.getAbsolutePath())
         .entity(TaskManagementUtils.filterUserTasks(tasks, userName))
-        .type(MediaType.APPLICATION_JSON_TYPE.toString() + "; charset=utf-8")
+        .type(MediaType.APPLICATION_JSON_TYPE + "; charset=utf-8")
         .status(Response.Status.OK)
         .build();
   }
@@ -112,7 +113,7 @@ public class TaskRestService implements ResourceContainer
     List<TaskBean> tasks = taskService.getAllTasks();
     return Response.created(uriInfo.getAbsolutePath())
         .entity(TaskManagementUtils.filterUserTasks(tasks, userName))
-        .type(MediaType.APPLICATION_JSON_TYPE.toString() + "; charset=utf-8")
+        .type(MediaType.APPLICATION_JSON_TYPE + "; charset=utf-8")
         .status(Response.Status.OK)
         .build();
   }
