@@ -18,9 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.CacheControl;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.ext.RuntimeDelegate;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,15 +63,15 @@ public class TaskRestService implements ResourceContainer
 
   @GET
   @Path("/list/byStatus/{status}/{userName}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response listTasksByStatus(@PathParam("status") String status,
+  public Response listTasksByStatus(@Context UriInfo uriInfo,
+                                    @PathParam("status") String status,
                                     @PathParam("userName") String userName) throws Exception
   {
     List<TaskBean> tasks = taskService.getTasksByStatus(status);
-    return Response.ok(
-        TaskManagementUtils.filterUserTasks(tasks, userName),
-        MediaType.APPLICATION_JSON)
-        .cacheControl(cacheControl)
+    return Response.created(uriInfo.getAbsolutePath())
+        .entity(TaskManagementUtils.filterUserTasks(tasks, userName))
+        .type(MediaType.APPLICATION_JSON_TYPE.toString() + "; charset=utf-8")
+        .status(Response.Status.OK)
         .build();
   }
 
@@ -108,13 +106,14 @@ public class TaskRestService implements ResourceContainer
   @GET
   @Path("/list/all/{userName}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response listAllUserTasks(@PathParam("userName") String userName) throws Exception
+  public Response listAllUserTasks(@Context UriInfo uriInfo,
+                                   @PathParam("userName") String userName) throws Exception
   {
     List<TaskBean> tasks = taskService.getAllTasks();
-    return Response.ok(
-        TaskManagementUtils.filterUserTasks(tasks, userName),
-        MediaType.APPLICATION_JSON)
-        .cacheControl(cacheControl)
+    return Response.created(uriInfo.getAbsolutePath())
+        .entity(TaskManagementUtils.filterUserTasks(tasks, userName))
+        .type(MediaType.APPLICATION_JSON_TYPE.toString() + "; charset=utf-8")
+        .status(Response.Status.OK)
         .build();
   }
 
@@ -185,11 +184,12 @@ public class TaskRestService implements ResourceContainer
   @GET
   @Path("/update/task/{id}/status")
   @Produces(MediaType.APPLICATION_JSON)
-  public void updateTask(@PathParam("id") String id,
-                         @QueryParam("status") String status) throws Exception
+  public Response updateTask(@PathParam("id") String id,
+                             @QueryParam("status") String status) throws Exception
   {
     TaskBean task = taskService.getTask(id);
     task.setStatus(TaskStatus.valueOf(status));
     taskService.updateTask(id, task);
+    return Response.ok().build();
   }
 }
