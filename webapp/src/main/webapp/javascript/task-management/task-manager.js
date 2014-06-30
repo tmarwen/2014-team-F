@@ -14,7 +14,7 @@
     context: (portal.context) ? portal.context : '/portal',
     accessMode: (portal.accessMode) ? portal.accessMode : 'public',
     userName: (portal.userName) ? portal.userName : '',
-    restTaskManagerURI:  'task-rest-manager'
+    restTaskManagerURI: 'task-rest-manager'
   };
 
   var restTaskManagerURL = "/" + TaskManagerUtil.rest + "/" + TaskManagerUtil.restTaskManagerURI,
@@ -27,12 +27,12 @@
     allProjectTasksRESTUrl = restTaskManagerURL + "/list/byType/project",
     projectTasksRESTUrl = restTaskManagerURL + "/list/byProject/{project}",
     updateTaskRESTUrl = restTaskManagerURL + "/update/task/{id}/status?status={status}",
-    taskItemHeaderResolver=  "taskHeader-",
-    taskItemContentResolver=  "taskContent-";
+    taskItemHeaderResolver = "taskHeader-",
+    taskItemContentResolver = "taskContent-";
   var userSpaces = [];
 
-  $( "#taskOperationTabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-  $( "#taskOperationTabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+  $("#taskOperationTabs").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+  $("#taskOperationTabs li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
   $("#taskListTab").tabs();
 
@@ -50,7 +50,7 @@
   });
 
   //Setup task type fields
-  $("#taskTypeWrapper").on('change', 'input:radio', function() {
+  $("#taskTypeWrapper").on('change', 'input:radio', function () {
     var value = this.value;
     if (value == "Personal") {
       $("#taskProject").prop("disabled", true);
@@ -62,12 +62,12 @@
     }
   });
 
-  $.getJSON(userSpaceRESTUrl, function(data){
+  $.getJSON(userSpaceRESTUrl, function (data) {
     var mySpaces = data.spaces;
     var $taskProjectSelectList = $('select#taskProject');
     var $perProjectProjectList = $('#perProjectTaskTab select#perProjectTaskProject');
     clearTaskProjectList();
-    $.each(mySpaces, function( key, val ) {
+    $.each(mySpaces, function (key, val) {
       var spaceName = val.name;
       userSpaces.push(val);
       $("<option></option>", {value: spaceName, text: val.displayName})
@@ -179,56 +179,56 @@
     });
   }
 
-  $('#todoTaskTab').on('click', 'button.startTaskButton', function(){
+  $('#todoTaskTab').on('click', 'button.startTaskButton', function () {
     var taskId = $(this).data('taskId');
     var updateURL = updateTaskRESTUrl
       .replace('{status}', 'INPROGRESS')
       .replace('{id}', taskId);
     $.get(updateURL)
-      .done(function(){
-      $('#todoTaskTab')
-        .find("h3#" + taskItemHeaderResolver + taskId.replace( /\s/g, ""))
-        .fadeOut(300, function() {
-          $(this).remove();
-          $('#todoTaskTab')
-            .find('div#' + taskItemContentResolver + taskId.replace( /\s/g, ""))
-            .fadeOut(200, function() {
-              $(this).remove();
-            });
-          pullInProgressTasks();
-        });
-    });
+      .done(function () {
+        $('#todoTaskTab')
+          .find("h3#" + taskItemHeaderResolver + taskId.replace(/\s/g, ""))
+          .fadeOut(300, function () {
+            $(this).remove();
+            $('#todoTaskTab')
+              .find('div#' + taskItemContentResolver + taskId.replace(/\s/g, ""))
+              .fadeOut(200, function () {
+                $(this).remove();
+              });
+            pullInProgressTasks();
+          });
+      });
   });
 
-  $('#inProgressTaskTab').on('click', 'button.finishTaskButton', function(){
+  $('#inProgressTaskTab').on('click', 'button.finishTaskButton', function () {
     var taskId = $(this).data('taskId');
     var updateURL = updateTaskRESTUrl
       .replace('{status}', 'DONE')
       .replace('{id}', taskId);
     $.get(updateURL)
-      .done(function(){
+      .done(function () {
         $('#inProgressTaskTab')
-        .find("h3#" + taskItemHeaderResolver + taskId.replace( /\s/g, ""))
-        .fadeOut(300, function() {
-          $(this).remove();
-          $('#inProgressTaskTab')
-            .find('div#' + taskItemContentResolver + taskId.replace( /\s/g, ""))
-            .fadeOut(200, function() {
-              $(this).remove();
-            });
+          .find("h3#" + taskItemHeaderResolver + taskId.replace(/\s/g, ""))
+          .fadeOut(300, function () {
+            $(this).remove();
+            $('#inProgressTaskTab')
+              .find('div#' + taskItemContentResolver + taskId.replace(/\s/g, ""))
+              .fadeOut(200, function () {
+                $(this).remove();
+              });
             pullDoneTasks();
-        });
+          });
       });
   });
 
-  $("#addTaskForm").on('change', 'select#taskProject', function() {
+  $("#addTaskForm").on('change', 'select#taskProject', function () {
     clearTaskAssigneeList();
     var $selectedSpace = $(this).find(':selected');
     var spaceUrl = $selectedSpace.data('url');
     var $taskAssigneeSelectList = $('select#taskAssignee');
-    $.getJSON(buildSpaceMemberUrl(spaceUrl), function(data){
+    $.getJSON(buildSpaceMemberUrl(spaceUrl), function (data) {
       var spaceMembers = data.names;
-      $.each(spaceMembers, function( key, val ) {
+      $.each(spaceMembers, function (key, val) {
         $("<option></option>", {value: val, text: val})
           .data({
             userName: val
@@ -238,12 +238,15 @@
     });
   });
 
-  $("#perProjectTaskTab").on('change', 'select#perProjectTaskProject', function() {
+  $("#perProjectTaskTab").on('change', 'select#perProjectTaskProject', function () {
     var $selectedSpace = $(this).find(':selected');
     var spaceUrl = $selectedSpace.data('url');
-    $.getJSON(projectTasksRESTUrl.replace('{project}', spaceUrl), function(projectTasks){
+    $.getJSON(projectTasksRESTUrl.replace('{project}', spaceUrl), function (projectTasks) {
       var $perProjectTasksContainer = $('#projectTasksContainer');
-      appendTaskItemToContainer($perProjectTasksContainer, projectTasks);
+      $perProjectTasksContainer.empty();
+      $.each(projectTasks, function (key, val) {
+        appendTaskItemToContainer($perProjectTasksContainer, val);
+      });
       $perProjectTasksContainer.accordion({
         collapsible: true,
         heightStyle: "content"
@@ -254,11 +257,11 @@
   function appendTaskItemToContainer(container, task) {
     var $taskId = $("<h3></h3>");
     $taskId.html(task.id)
-      .attr("id", taskItemHeaderResolver + task.id.replace( /\s/g, ""))
+      .attr("id", taskItemHeaderResolver + task.id.replace(/\s/g, ""))
       .appendTo(container);
     var $taskDiv = $("<div></div>");
     $taskDiv
-      .attr("id", taskItemContentResolver + task.id.replace( /\s/g, ""))
+      .attr("id", taskItemContentResolver + task.id.replace(/\s/g, ""))
       .addClass("taskItemContainer");
     var $taskDescription = $("<textarea></textarea>");
     $taskDescription.val(task.description)
