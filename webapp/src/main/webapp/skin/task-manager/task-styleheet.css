@@ -16,9 +16,8 @@
     background-color: #F8F8F8;
 }
 
-#taskViewContainer #h3 {
+h3.containerTitle {
     text-align: center;
-
 }
 #taskViewContainer #taskRedirections {
     margin-right: 17px;

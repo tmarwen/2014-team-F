@@ -23,6 +23,7 @@
     inProgressTasksRESTUrl = restTaskManagerURL + "/list/byStatus/inprogress/" + TaskManagerUtil.userName,
     doneTasksRESTUrl = restTaskManagerURL + "/list/byStatus/done/" + TaskManagerUtil.userName,
     personalTasksRESTUrl = restTaskManagerURL + "/list/byType/personal/" + TaskManagerUtil.userName,
+    allUserTasksRESTUrl = restTaskManagerURL + "/list/all/" + TaskManagerUtil.userName,
     allProjectTasksRESTUrl = restTaskManagerURL + "/list/byType/project",
     projectTasksRESTUrl = restTaskManagerURL + "/list/byProject/{project}",
     updateTaskRESTUrl = restTaskManagerURL + "/update/task/{id}/status?status={status}",
@@ -84,6 +85,7 @@
   pullTodoTasks();
   pullInProgressTasks();
   pullDoneTasks();
+  pullAllUserTasks();
 
   function pullTodoTasks() {
     var $todoTasksContainer = $('#todoTaskTab');
@@ -137,6 +139,40 @@
         appendTaskItemToContainer($doneTasksContainer, val);
       });
       $doneTasksContainer.accordion({
+        collapsible: true,
+        heightStyle: "content"
+      });
+    });
+  }
+
+  function pullAllUserTasks() {
+    var $allTasksContainer = $('#allTaskTab #list');
+    $allTasksContainer.empty();
+    $.getJSON(allUserTasksRESTUrl, function (allTasks) {
+      $.each(allTasks, function (key, val) {
+        var $taskDiv = appendTaskItemToContainer($allTasksContainer, val);
+        if (val.type === "TODO") {
+          var $startTaskButton = $("<button></button>");
+          $startTaskButton.attr({
+            id: "startTask" + val.id
+          })
+            .data("taskId", val.id)
+            .addClass("btn btn-danger startTaskButton pull-right")
+            .html("Start this Task!")
+            .appendTo($taskDiv);
+        }
+        else if (val.type === "INPRORESS") {
+          var $finishTaskButton = $("<button></button>");
+          $finishTaskButton.attr({
+            id: "finishTask" + val.id
+          })
+            .data("taskId", val.id)
+            .addClass("btn btn-warning finishTaskButton pull-right")
+            .html("Are You Done?")
+            .appendTo($taskDiv);
+        }
+      });
+      $allTasksContainer.accordion({
         collapsible: true,
         heightStyle: "content"
       });

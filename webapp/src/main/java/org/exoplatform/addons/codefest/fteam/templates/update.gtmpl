@@ -1,0 +1,66 @@
+%{--
+#{title value=task.id/}
+#{param name=task/}
+
+<%
+  def dueDateAndTime[] = task.dueDate.split(" ");
+  def dueDate = dueDateAndTime[0];
+  def dueTime = dueDateAndTime[1];
+  def startDateAndTime[] = task.startDate.split(" ");
+  def startDate = dueDateAndTime[0];
+  def startTime = dueDateAndTime[1];
+  %>
+
+<h3 class="containerTitle">Update Task</h3>
+
+<div id="taskViewContainer">
+  <div id="taskProperties">
+    <form class="form-horizontal" role="form" action="${updateTask()}">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>ID:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.id}" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><strong>Description:</strong></label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" placeholder="${task.description}">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="taskStartDate">Start Date</label>
+        <div class="controls">
+          <input id="taskStartDate" name="taskStartDate" placeholder="${dueDate}"
+                 class="input-large date start" type="text">
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <input id="taskStartTime" name="taskStartTime" placeholder="${dueTime}"
+                 class="input-medium time start" type="text">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="taskDueDate">Due Date</label>
+        <div class="controls">
+          <input id="taskDueDate" name="taskDueDate" placeholder="${startDate}"
+                 class="input-large date end" type="text">
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <input id="taskDueTime" name="taskDueTime" placeholder="${startTime}" class="input-medium time end"
+                 type="text">
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="updateTask"></label>
+    <div class="controls">
+      <button id="updateTask" name="updateTask" class="btn btn-primary" type="submit">Update</button>
+    </div>
+  </div>
+</div>--}%

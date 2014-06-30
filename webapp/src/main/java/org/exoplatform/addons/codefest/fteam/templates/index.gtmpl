@@ -21,7 +21,7 @@
           <fieldset>
 
             <!-- Form Name -->
-            <legend>Add Task</legend>
+            <legend class="containerTitle">Add Task</legend>
 
             <!-- Text input-->
             <div class="control-group">
