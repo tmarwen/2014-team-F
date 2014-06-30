@@ -7,6 +7,7 @@ import org.exoplatform.addons.codefest.fteam.model.TaskStatus;
 import org.exoplatform.addons.codefest.fteam.model.TaskType;
 import org.exoplatform.addons.codefest.fteam.service.TaskService;
 import org.exoplatform.addons.codefest.fteam.service.mapper.TaskBeanMapper;
+import org.exoplatform.addons.codefest.fteam.service.util.TaskManagementUtils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.rest.impl.RuntimeDelegateImpl;
@@ -68,13 +69,12 @@ public class TaskRestService implements ResourceContainer
   public Response listTasksByStatus(@PathParam("status") String status,
                                     @PathParam("userName") String userName) throws Exception
   {
-    List<TaskBean> tasks = new ArrayList<TaskBean>();
-    for (TaskBean task : taskService.getTasksByStatus(status))
-    {
-      if (task.getOwner().equals(userName) && task.getType().equals(TaskType.PERSONAL))
-        tasks.add(task);
-    }
-    return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
+    List<TaskBean> tasks = taskService.getTasksByStatus(status);
+    return Response.ok(
+        TaskManagementUtils.filterUserTasks(tasks, userName),
+        MediaType.APPLICATION_JSON)
+        .cacheControl(cacheControl)
+        .build();
   }
 
   @GET
@@ -103,6 +103,19 @@ public class TaskRestService implements ResourceContainer
   {
     List<TaskBean> tasks = taskService.getAllTasks();
     return Response.ok(tasks, MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
+  }
+
+  @GET
+  @Path("/list/all/{userName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response listAllUserTasks(@PathParam("userName") String userName) throws Exception
+  {
+    List<TaskBean> tasks = taskService.getAllTasks();
+    return Response.ok(
+        TaskManagementUtils.filterUserTasks(tasks, userName),
+        MediaType.APPLICATION_JSON)
+        .cacheControl(cacheControl)
+        .build();
   }
 
   @GET

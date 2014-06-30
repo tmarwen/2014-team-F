@@ -21,7 +21,9 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -164,5 +166,23 @@ public class TaskManagementUtils
   public static String format(Date date)
   {
     return dateFormat.format(date);
+  }
+
+  public static List<TaskBean> filterUserTasks(List<TaskBean> tasks, String userName)
+  {
+    List<TaskBean> userTasks = new ArrayList<TaskBean>();
+
+    for (TaskBean task : tasks)
+    {
+      if (task.getOwner().equals(userName) && task.getType().equals(TaskType.PERSONAL))
+      {
+        userTasks.add(task);
+      }
+      else if (task.getAssignee().equals(userName) && task.getType().equals(TaskType.PROJECT))
+      {
+        userTasks.add(task);
+      }
+    }
+    return userTasks;
   }
 }
